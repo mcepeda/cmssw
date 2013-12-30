@@ -7,7 +7,6 @@ using std::endl;
 
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-
 #include "L1Trigger/RegionalCaloTrigger/interface/L1RCTLookupTables.h"
 
 #include "CondFormats/L1TObjects/interface/L1RCTParameters.h"
