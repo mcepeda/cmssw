@@ -35,6 +35,13 @@ void l1t::Stage1Layer2EGammaAlgorithmImpPP::processEvent(const std::vector<l1t::
   double egRelativeJetIsolationBarrelCut = params_->egRelativeJetIsolationBarrelCut();
   double egRelativeJetIsolationEndcapCut = params_->egRelativeJetIsolationEndcapCut();
 
+  int egMinPtRelativeJetIsolation = params_->egMinPtRelativeJetIsolation();
+  int egMaxPtRelativeJetIsolation = params_->egMaxPtRelativeJetIsolation();
+  int egMinPt3x3HoE = params_->egMinPt3x3HoE();
+  int egMaxPt3x3HoE = params_->egMaxPt3x3HoE();
+
+
+
   std::string regionPUSType = params_->regionPUSType();
   std::vector<double> regionPUSParams = params_->regionPUSParams();
 
@@ -65,22 +72,29 @@ void l1t::Stage1Layer2EGammaAlgorithmImpPP::processEvent(const std::vector<l1t::
 
     int quality = 1;
     int isoFlag = 0;
+    int isoFlagRct = 0;
 
 
+    // 3x3 HoE, computed in 3x3
+
+    if(eg_et>=egMaxPt3x3HoE && egMinPt3x3HoE >= eg_et) {
+                 if(egCand->hwIso()) isoFlagRct =1;
+    }
+    else {isoFlagRct =1;}   
+ 
     // ------- isolation and H/E ---------------
     // double isolation = Isolation(eg_eta, eg_phi, *subRegions);
-    //if( eg_et > 0 && (isolation / eg_et ) > relativeIsolationCut) isoFlag  = 0;
+    //if( eg_et > 0 && (isolation / eg_et ) > relativeIsolationCut^&& eg_et<egMaxPtRelativeJetIsolation) isoFlag  = 0;
 
     double jet_pt=AssociatedJetPt(eg_eta,eg_phi,unCorrJets);
     jet_pt=jet_pt*jetLsb;
     bool isinBarrel = (eg_eta>=7 && eg_eta<=14);
-    if (jet_pt>0){
+    if (jet_pt>0 && eg_et>=egMinPtRelativeJetIsolation && eg_et<egMaxPtRelativeJetIsolation){
       double jetIsolationEG = jet_pt - eg_et;        // Jet isolation
       double relativeJetIsolationEG = jetIsolationEG / eg_et;
 
-      if(eg_et >0 && eg_et<63 && isinBarrel && relativeJetIsolationEG < egRelativeJetIsolationBarrelCut) isoFlag=1;
-      if(eg_et >0 && eg_et<63 && !isinBarrel && relativeJetIsolationEG < egRelativeJetIsolationEndcapCut) isoFlag=1;
-      if( eg_et >= 63) isoFlag=1;
+      if(isinBarrel && relativeJetIsolationEG < egRelativeJetIsolationBarrelCut) isoFlag=1;
+      if(!isinBarrel && relativeJetIsolationEG < egRelativeJetIsolationEndcapCut) isoFlag=1;
     }else{ // no associated jet; assume it's an isolated eg
       isoFlag=1;
     }
@@ -89,8 +103,10 @@ void l1t::Stage1Layer2EGammaAlgorithmImpPP::processEvent(const std::vector<l1t::
     // double hoe = HoverE(eg_et, eg_eta, eg_phi, *subRegions);
 
 
+    bool fullIsoFlag=isoFlag&&isoFlagRct;
+
     // ------- fill the EG candidate vector ---------
-    l1t::EGamma theEG(*&egLorentz, eg_et, eg_eta, eg_phi, quality, isoFlag);
+    l1t::EGamma theEG(*&egLorentz, eg_et, eg_eta, eg_phi, quality, fullIsoFlag);
     //?? if( hoe < HoverECut) egammas->push_back(theEG);
     preGtEGammas->push_back(theEG);
   }
