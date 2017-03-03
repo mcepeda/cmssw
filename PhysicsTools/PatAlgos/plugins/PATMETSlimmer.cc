@@ -93,6 +93,16 @@ void pat::PATMETSlimmer::maybeReadShifts(const edm::ParameterSet &basePSet, cons
 	  shifts_.push_back(OneMETShift(pat::MET::TauEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
 	  shifts_.push_back(OneMETShift(pat::MET::UnclusteredEnUp,   level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
 	  shifts_.push_back(OneMETShift(pat::MET::UnclusteredEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+             
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredCHARGEDPFEnUp,   level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredCHARGEDPFEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredHCALEnUp,   level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredHCALEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredECALEnUp,   level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredECALEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredHFEnUp,   level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+          shifts_.push_back(OneMETShift(pat::MET::UnclusteredHFEnDown, level, baseTag, consumesCollector(), readFromMiniAOD, false, true));
+
 	}
 	else if(level==pat::MET::Smear) {
 	  shifts_.push_back(OneMETShift(pat::MET::NoShift, level, baseTag, consumesCollector(), readFromMiniAOD, true, false, true));
@@ -112,6 +122,7 @@ pat::PATMETSlimmer::OneMETShift::OneMETShift(pat::MET::METUncertainty shift_, pa
 {
 
     std::string baseTagStr = baseTag.encode();
+    
     char buff[1024];
     switch (shift) {
         case pat::MET::NoShift  : snprintf(buff, 1023, baseTagStr.c_str(), "");   break;
@@ -129,6 +140,16 @@ pat::PATMETSlimmer::OneMETShift::OneMETShift(pat::MET::METUncertainty shift_, pa
         case pat::MET::TauEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "TauEnDown"); break;
         case pat::MET::UnclusteredEnUp  : snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredEnUp");   break;
         case pat::MET::UnclusteredEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredEnDown"); break;
+        case pat::MET::UnclusteredHCALEnUp: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredHCALEnUp");  break;
+        case pat::MET::UnclusteredHCALEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredHCALEnDown"); break;
+        case pat::MET::UnclusteredECALEnUp  : snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredECALEnUp");   break;
+        case pat::MET::UnclusteredECALEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredECALEnDown"); break;
+        case pat::MET::UnclusteredCHARGEDPFEnUp  : snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredCHARGEDPFEnUp");   break;
+        case pat::MET::UnclusteredCHARGEDPFEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredCHARGEDPFEnDown"); break;
+        case pat::MET::UnclusteredHFEnUp  : snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredHFEnUp");   break;
+        case pat::MET::UnclusteredHFEnDown: snprintf(buff, 1023, baseTagStr.c_str(), "UnclusteredHFEnDown"); break;
+
+
         default: throw cms::Exception("LogicError", "OneMETShift constructor called with bogus shift");
     }
     token = cc.consumes<pat::METCollection>(edm::InputTag(buff));

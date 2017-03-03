@@ -153,8 +153,14 @@ namespace pat {
 	JetResUp=0, JetResDown=1, JetEnUp=2, JetEnDown=3,
         MuonEnUp=4, MuonEnDown=5, ElectronEnUp=6, ElectronEnDown=7,
 	TauEnUp=8, TauEnDown=9, UnclusteredEnUp=10, UnclusteredEnDown=11,
-	PhotonEnUp=12, PhotonEnDown=13, NoShift=14, METUncertaintySize=15,
-	JetResUpSmear=16, JetResDownSmear=17, METFullUncertaintySize=18
+	PhotonEnUp=12, PhotonEnDown=13,
+        UnclusteredHFEnUp=14, UnclusteredHFEnDown=15, 
+        UnclusteredECALEnUp=16, UnclusteredECALEnDown=17, 
+        UnclusteredHCALEnUp=18, UnclusteredHCALEnDown=19,
+        UnclusteredCHARGEDPFEnUp=20, UnclusteredCHARGEDPFEnDown=21,
+        NoShift=22, METUncertaintySize=23,
+        JetResUpSmear=24, JetResDownSmear=25,
+         METFullUncertaintySize=26,
       };
       enum METCorrectionLevel {
         Raw=0, Type1=1, Type01=2, TypeXY=3, Type1XY=4, Type01XY=5,

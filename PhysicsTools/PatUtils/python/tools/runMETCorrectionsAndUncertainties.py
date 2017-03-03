@@ -786,6 +786,10 @@ class RunMETCorrectionsAndUncertainties(ConfigToolBase):
                               "Photon":photonCollection,
                               "Muon":muonCollection,
                               "Unclustered":cms.InputTag("pfCandsForUnclusteredUnc"+postfix),
+                              "UnclusteredCHARGEDPF":cms.InputTag("pfCandsForUnclusteredUnc"+postfix),
+                              "UnclusteredHCAL":cms.InputTag("pfCandsForUnclusteredUnc"+postfix),
+                              "UnclusteredECAL":cms.InputTag("pfCandsForUnclusteredUnc"+postfix),
+                              "UnclusteredHF":cms.InputTag("pfCandsForUnclusteredUnc"+postfix),
                               "Tau":tauCollection,
                               }
         
@@ -867,6 +871,72 @@ class RunMETCorrectionsAndUncertainties(ConfigToolBase):
                     ),
                                              shiftBy = cms.double(+1.*varyByNsigmas)
                                              )
+
+        if identifier == "UnclusteredCHARGEDPF":
+            shiftedModuleUp = cms.EDProducer("ShiftedParticleProducer",
+                                             src = objectCollection,
+                                             binning = cms.VPSet(
+                    # charged PF hadrons - tracker resolution
+                    cms.PSet(
+                        binSelection = cms.string('charge!=0'),
+                        binUncertainty = cms.string('sqrt(pow(0.00009*x,2)+pow(0.0085/sqrt(sin(2*atan(exp(-y)))),2))')
+                        ),
+                    ),
+                                             shiftBy = cms.double(+1.*varyByNsigmas)
+                                             )
+
+
+        if identifier == "UnclusteredHCAL":
+            shiftedModuleUp = cms.EDProducer("ShiftedParticleProducer",
+                                             src = objectCollection,
+                                             binning = cms.VPSet(
+                    # neutral PF hadrons - HCAL resolution
+                    cms.PSet(
+                        binSelection = cms.string('pdgId==130'),
+                        energyDependency = cms.bool(True),
+                        binUncertainty = cms.string('((abs(y)<1.3)?(min(0.25,sqrt(0.64/x+0.0025))):(min(0.30,sqrt(1.0/x+0.0016))))')
+                        ),
+                    ),
+                                             shiftBy = cms.double(+1.*varyByNsigmas)
+                                             )
+
+
+
+        if identifier == "UnclusteredECAL":
+            shiftedModuleUp = cms.EDProducer("ShiftedParticleProducer",
+                                             src = objectCollection,
+                                             binning = cms.VPSet(
+                    # photon - ECAL resolution
+                    cms.PSet(
+                        binSelection = cms.string('pdgId==22'),
+                        energyDependency = cms.bool(True),
+                        binUncertainty = cms.string('sqrt(0.0009/x+0.000001)+0*y')
+                        ),
+                    ),
+                                             shiftBy = cms.double(+1.*varyByNsigmas)
+                                             )
+
+
+        if identifier == "UnclusteredHF":
+            shiftedModuleUp = cms.EDProducer("ShiftedParticleProducer",
+                                             src = objectCollection,
+                                             binning = cms.VPSet(
+                    # HF particules - HF resolution
+                    cms.PSet(
+                        binSelection = cms.string('pdgId==1 || pdgId==2'),
+                        energyDependency = cms.bool(True),
+                        binUncertainty = cms.string('sqrt(1./x+0.0025)+0*y')
+                        ),
+                    ),
+                                             shiftBy = cms.double(+1.*varyByNsigmas)
+                                             )
+
+
+
+
+
+
+
 
         if identifier == "Jet":
             moduleType="ShiftedPATJetProducer"
@@ -1131,6 +1201,14 @@ class RunMETCorrectionsAndUncertainties(ConfigToolBase):
             if identifier == "Photon":
                 photonCollection = cms.InputTag(shiftedCollection)
             if identifier == "Unclustered":
+                pfCandCollection = cms.InputTag(shiftedCollection)
+            if identifier == "UnclusteredCHARGEDPF":
+                pfCandCollection = cms.InputTag(shiftedCollection)
+            if identifier == "UnclusteredECAL":
+                pfCandCollection = cms.InputTag(shiftedCollection)
+            if identifier == "UnclusteredHCAL":
+                pfCandCollection = cms.InputTag(shiftedCollection)
+            if identifier == "UnclusteredHF":
                 pfCandCollection = cms.InputTag(shiftedCollection)
             if identifier == "Jet":
                 corJetCollection = cms.InputTag(shiftedCollection)
