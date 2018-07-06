@@ -1,4 +1,5 @@
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseII.h"
+#include "L1Trigger/L1TMuon/interface/MicroGMTConfiguration.h"
 
 L1Analysis::L1AnalysisPhaseII::L1AnalysisPhaseII()
 {
@@ -13,7 +14,8 @@ void L1Analysis::L1AnalysisPhaseII::SetEm(const edm::Handle<l1t::EGammaBxCollect
 {
   for (int ibx = em->getFirstBX(); ibx <= em->getLastBX(); ++ibx) {
     for (l1t::EGammaBxCollection::const_iterator it=em->begin(ibx); it!=em->end(ibx) && l1extra_.nEGs<maxL1Extra; it++){
-      if (it->pt() > 0){
+      if (it->pt() > 10){
+      //std::cout <<"Inside the tree maker"<< it->eta()<<"   "<<it->pt()<<std::endl;
 	l1extra_.egEt .push_back(it->pt());
 	l1extra_.egEta.push_back(it->eta());
 	l1extra_.egPhi.push_back(it->phi());
@@ -121,6 +123,33 @@ void L1Analysis::L1AnalysisPhaseII::SetMuon(const edm::Handle<l1t::MuonBxCollect
   }
 }
 
+void L1Analysis::L1AnalysisPhaseII::SetMuonKF(const edm::Handle<l1t::RegionalMuonCandBxCollection> muonKF, unsigned maxL1Extra)
+{
+  for (int ibx = muonKF->getFirstBX(); ibx <= muonKF->getLastBX(); ++ibx) {
+    for (l1t::RegionalMuonCandBxCollection::const_iterator it=muonKF->begin(ibx); it!=muonKF->end(ibx) && l1extra_.nMuonsKF<maxL1Extra; it++){
+      if (it->hwPt() > 0){
+      l1extra_.muonKFEt .push_back(it->hwPt()*0.5);
+      l1extra_.muonKFEta.push_back(it->hwEta()*0.010875);
+      l1extra_.muonKFPhi.push_back(l1t::MicroGMTConfiguration::calcGlobalPhi( it->hwPhi(), it->trackFinderType(), it->processor() )*2*M_PI/576);
+      l1extra_.muonKFChg.push_back(pow(-1,it->hwSign()));
+      l1extra_.muonKFQual.push_back(it->hwQual());
+      l1extra_.muonKFBx .push_back(ibx);
+      l1extra_.nMuonsKF++;
+      }
+    }
+  }
+}
+  // RegionalMuons are a bit ugly... why not global muons?? 
+  /// Get compressed pT (returned int * 0.5 = pT (GeV))
+  //    const int hwPt() const { return m_hwPt; };
+  //        /// Get compressed local phi (returned int * 2*pi/576 = local phi in rad)
+  //            const int hwPhi() const { return m_hwPhi; };
+  //                /// Get compressed eta (returned int * 0.010875 = eta)
+  //                    const int hwEta() const { return m_hwEta; };
+  //                        /// Get charge sign bit (charge = (-1)^(sign))
+  //                        const int hwSign() const { return m_hwSign; };
+
+
 void L1Analysis::L1AnalysisPhaseII::SetSum(const edm::Handle<l1t::EtSumBxCollection> sums, unsigned maxL1Extra)
 {
   for (int ibx = sums->getFirstBX(); ibx <= sums->getLastBX(); ++ibx) {
@@ -136,8 +165,6 @@ void L1Analysis::L1AnalysisPhaseII::SetSum(const edm::Handle<l1t::EtSumBxCollect
     }
   }
 }
-
-
 
 // TrkEG
 void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronParticleCollection> tkEG, unsigned maxL1Extra)
@@ -157,19 +184,23 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
 void L1Analysis::L1AnalysisPhaseII::SetEGCrystal(const edm::Handle<l1t::EGammaBxCollection> EGCrystal, unsigned maxL1Extra)
 {
   for(l1t::EGammaBxCollection::const_iterator it=EGCrystal->begin(); it!=EGCrystal->end() && l1extra_.nEGCrystal<maxL1Extra; it++){
+    if (it->et() > 10){
     l1extra_.EGCrystalEt .push_back(it->et());
     l1extra_.EGCrystalEta.push_back(it->eta());
     l1extra_.EGCrystalPhi.push_back(it->phi());
     l1extra_.EGCrystalIso.push_back(it->isoEt());
+    l1extra_.EGCrystalHwQual.push_back(it->hwQual());
     l1extra_.EGCrystalBx.push_back(0);//it->bx());
     l1extra_.nEGCrystal++;
   }
+}
 }
 
 // TrkEG (seeded by Barrel Crystals)
 void L1Analysis::L1AnalysisPhaseII::SetTkEGCrystal(const edm::Handle<l1t::L1TkElectronParticleCollection> tkEGCrystal, unsigned maxL1Extra)
 {
   for(l1t::L1TkElectronParticleCollection::const_iterator it=tkEGCrystal->begin(); it!=tkEGCrystal->end() && l1extra_.nTkEGCrystal<maxL1Extra; it++){
+    if (it->et() > 10){
     l1extra_.tkEGCrystalEt .push_back(it->et());
     l1extra_.tkEGCrystalEta.push_back(it->eta());
     l1extra_.tkEGCrystalPhi.push_back(it->phi());
@@ -177,19 +208,20 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGCrystal(const edm::Handle<l1t::L1TkEl
     l1extra_.tkEGCrystalTrkIso.push_back(it->getTrkIsol());
     l1extra_.tkEGCrystalBx.push_back(0);//it->bx());
     l1extra_.nTkEGCrystal++;
-  }
+  }}
 }
 
 void L1Analysis::L1AnalysisPhaseII::SetTkEMCrystal(const edm::Handle<l1t::L1TkEmParticleCollection> tkEMCrystal, unsigned maxL1Extra)
 {
   for(l1t::L1TkEmParticleCollection::const_iterator it=tkEMCrystal->begin(); it!=tkEMCrystal->end() && l1extra_.nTkEMCrystal<maxL1Extra; it++){
+    if (it->et() > 10){
     l1extra_.tkEMCrystalEt .push_back(it->et());
     l1extra_.tkEMCrystalEta.push_back(it->eta());
     l1extra_.tkEMCrystalPhi.push_back(it->phi());
     l1extra_.tkEMCrystalTrkIso.push_back(it->getTrkIsol());
     l1extra_.tkEMCrystalBx.push_back(0);//it->bx());
     l1extra_.nTkEMCrystal++;
-  }
+  }}
 }
 
 // TrkIsoEG
@@ -241,7 +273,6 @@ void L1Analysis::L1AnalysisPhaseII::SetTkTau(const edm::Handle<l1t::L1TkTauParti
 // TkJet
 void L1Analysis::L1AnalysisPhaseII::SetTkJet(const edm::Handle<l1t::L1TkJetParticleCollection> tkJet, unsigned maxL1Extra)
 {
-  //      std::cout << "Filling L1 Extra cenJets" << maxL1Extra << " " << cenJet->size() << std::endl;
 
   for(l1t::L1TkJetParticleCollection::const_iterator it=tkJet->begin(); it!=tkJet->end() && l1extra_.nTkJets<maxL1Extra; it++){
     l1extra_.tkJetEt .push_back(it->et());
@@ -285,10 +316,6 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::L1TkMuonPar
   }
 }
 
-
-
-
-
 // TkMet
 void L1Analysis::L1AnalysisPhaseII::SetTkMet(const edm::Handle<l1t::L1TkEtMissParticleCollection> tkMets)
 {
@@ -312,3 +339,69 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMht(const edm::Handle<l1t::L1TkHTMissPa
     l1extra_.nTkMht++;
   }
 }
+
+void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<reco::PFJetCollection> CaloJet, unsigned maxL1Extra)
+{
+
+  for(reco::PFJetCollection::const_iterator it=CaloJet->begin(); it!=CaloJet->end() && l1extra_.nAk4L1CaloJets<maxL1Extra; it++){
+    l1extra_.ak4L1CaloJetEt .push_back(it->et());
+    l1extra_.ak4L1CaloJetEta.push_back(it->eta());
+    l1extra_.ak4L1CaloJetPhi.push_back(it->phi());
+//    l1extra_.ak4L1CaloJetzVtx.push_back(it->getJetVtx());
+    l1extra_.ak4L1CaloJetBx .push_back(0);//it->bx());
+    l1extra_.nAk4L1CaloJets++;
+  }
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollection> PFJet, unsigned maxL1Extra)
+{
+
+  for(reco::PFJetCollection::const_iterator it=PFJet->begin(); it!=PFJet->end() && l1extra_.nAk4L1PFJets<maxL1Extra; it++){
+    l1extra_.ak4L1PFJetEt .push_back(it->et());
+    l1extra_.ak4L1PFJetEta.push_back(it->eta());
+    l1extra_.ak4L1PFJetPhi.push_back(it->phi());
+//    l1extra_.ak4L1PFJetzVtx.push_back(it->getJetVtx());
+    l1extra_.ak4L1PFJetBx .push_back(0);//it->bx());
+    l1extra_.nAk4L1PFJets++;
+  }
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetL1TKJet(const edm::Handle<reco::PFJetCollection> L1TKJet, unsigned maxL1Extra)
+{
+
+  for(reco::PFJetCollection::const_iterator it=L1TKJet->begin(); it!=L1TKJet->end() && l1extra_.nAk4L1TKJets<maxL1Extra; it++){
+    l1extra_.ak4L1TKJetEt .push_back(it->et());
+    l1extra_.ak4L1TKJetEta.push_back(it->eta());
+    l1extra_.ak4L1TKJetPhi.push_back(it->phi());
+//    l1extra_.ak4L1TKJetzVtx.push_back(it->getJetVtx());
+    l1extra_.ak4L1TKJetBx .push_back(0);//it->bx());
+    l1extra_.nAk4L1TKJets++;
+  }
+
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetL1METCalo(const edm::Handle< std::vector<reco::PFMET> > l1MetCalo)
+{
+  reco::PFMET met=l1MetCalo->at(0);
+  l1extra_.l1MetCaloEt = met.et();
+  l1extra_.l1MetCaloPhi = met.phi();
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF)
+{
+  reco::PFMET met=l1MetPF->at(0);
+  l1extra_.l1MetPFEt = met.et();
+  l1extra_.l1MetPFPhi = met.phi();
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetL1METTK(const edm::Handle< std::vector<reco::PFMET> > l1MetTK)
+{
+  reco::PFMET met=l1MetTK->at(0);
+  l1extra_.l1MetTKEt = met.et();
+  l1extra_.l1MetTKPhi = met.phi();
+}
+
+
+
+
+
