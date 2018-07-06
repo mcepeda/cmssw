@@ -13,6 +13,7 @@
 #include "DataFormats/L1Trigger/interface/Jet.h"
 #include "DataFormats/L1Trigger/interface/Muon.h"
 #include "DataFormats/L1Trigger/interface/EtSum.h"
+#include "DataFormats/L1TMuon/interface/RegionalMuonCand.h"
 
 #include "DataFormats/L1Trigger/interface/L1EmParticleFwd.h"
 #include "DataFormats/L1Trigger/interface/L1EmParticle.h"
@@ -42,6 +43,9 @@
 #include "DataFormats/L1TrackTrigger/interface/L1TkHTMissParticle.h"
 #include "DataFormats/L1TrackTrigger/interface/L1TkHTMissParticleFwd.h"
 
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/METReco/interface/PFMET.h"
+
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
 namespace L1Analysis
@@ -53,6 +57,7 @@ namespace L1Analysis
     ~L1AnalysisPhaseII();
     void Reset() {l1extra_.Reset();}
 
+    // Old style objects (Phase I)
     void SetEm   (const edm::Handle<l1t::EGammaBxCollection> em,   unsigned maxL1Extra);
     void SetTau  (const edm::Handle<l1t::TauBxCollection>    tau,  unsigned maxL1Extra);
     void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
@@ -61,6 +66,7 @@ namespace L1Analysis
 
     // Add new standalone objects 
     void SetEGCrystal   (const edm::Handle<l1t::EGammaBxCollection> EGCrystal,   unsigned maxL1Extra);
+    void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra);
 
     // Add L1TrackTriggerObjects
     void SetTkEM          (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,     unsigned maxL1Extra);
@@ -74,7 +80,19 @@ namespace L1Analysis
     void SetTkMet  (const  edm::Handle<l1t::L1TkEtMissParticleCollection> tkMets);
     void SetTkMht  (const  edm::Handle<l1t::L1TkHTMissParticleCollection> tkMhts);
 
+    // Add new PFJet collections 
+    void SetCaloJet  (const    edm::Handle<reco::PFJetCollection>  CaloJet,    unsigned maxL1Extra);
+    void SetPFJet  (const      edm::Handle<reco::PFJetCollection>  PFJet,    unsigned maxL1Extra);
+    void SetL1TKJet  (const    edm::Handle<reco::PFJetCollection>  L1TKJet,    unsigned maxL1Extra);
+
+    void SetL1METCalo(const edm::Handle< std::vector<reco::PFMET> > l1MetCalo);
+    void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
+    void SetL1METTK(const edm::Handle< std::vector<reco::PFMET> > l1MetTK);
+
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
+
+
+
 
   private :
     L1AnalysisPhaseIIDataFormat l1extra_;

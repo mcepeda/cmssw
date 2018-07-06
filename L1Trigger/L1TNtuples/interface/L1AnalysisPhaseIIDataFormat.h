@@ -95,6 +95,17 @@ namespace L1Analysis
       muonTfMuonIdx.clear();
       muonBx.clear();
 
+
+      nMuonsKF = 0;
+      muonKFEt.clear();
+      muonKFEta.clear();
+      muonKFPhi.clear();
+      muonKFChg.clear();
+      muonKFQual.clear();
+      muonKFBx.clear();
+
+
+
       nSums = 0;
       sumType.clear();
       sumEt.clear();
@@ -138,7 +149,8 @@ namespace L1Analysis
       EGCrystalBx.clear();
       EGCrystalIso.clear();
       EGCrystalzVtx.clear();
-       
+      EGCrystalHwQual.clear();      
+ 
       nTkEGCrystal = 0;
       tkEGCrystalEt.clear();
       tkEGCrystalEta.clear();
@@ -200,6 +212,36 @@ namespace L1Analysis
       tkMhtPhi.clear();
       tkMhtBx.clear();
 
+      // New Jet Collections
+      nAk4L1CaloJets = 0;
+      ak4L1CaloJetEt.clear();
+      ak4L1CaloJetEta.clear();
+      ak4L1CaloJetPhi.clear();
+      ak4L1CaloJetBx.clear();
+      ak4L1CaloJetzVtx.clear();
+
+      nAk4L1PFJets = 0;
+      ak4L1PFJetEt.clear();
+      ak4L1PFJetEta.clear();
+      ak4L1PFJetPhi.clear();
+      ak4L1PFJetBx.clear();
+      ak4L1PFJetzVtx.clear();
+
+      nAk4L1TKJets = 0;
+      ak4L1TKJetEt.clear();
+      ak4L1TKJetEta.clear();
+      ak4L1TKJetPhi.clear();
+      ak4L1TKJetBx.clear();
+      ak4L1TKJetzVtx.clear();
+
+      l1MetCaloEt=0;
+      l1MetCaloPhi=0;
+
+      l1MetPFEt=0;
+      l1MetPFPhi=0;
+
+      l1MetTKEt=0;
+      l1MetTKPhi=0;
 
     }
   
@@ -276,6 +318,15 @@ namespace L1Analysis
     std::vector<unsigned short int> muonTfMuonIdx;
     std::vector<short int>      muonBx;
 
+
+    unsigned short int nMuonsKF;
+    std::vector<float>   muonKFEt;
+    std::vector<float>   muonKFEta;
+    std::vector<float>   muonKFPhi;
+    std::vector<short int>      muonKFChg;
+    std::vector<unsigned short int> muonKFQual;
+    std::vector<short int>      muonKFBx;
+
     unsigned short int nSums;
     std::vector<short int> sumType;
     std::vector<float> sumEt;
@@ -315,6 +366,7 @@ namespace L1Analysis
     std::vector<int>    EGCrystalBx;
     std::vector<double> EGCrystalIso;
     std::vector<double> EGCrystalzVtx;
+    std::vector<int>    EGCrystalHwQual;
 
     unsigned int nTkEGCrystal;
     std::vector<double> tkEGCrystalEt;
@@ -372,6 +424,36 @@ namespace L1Analysis
     std::vector<double> tkMht;
     std::vector<double> tkMhtPhi;
     std::vector<double> tkMhtBx;
+
+    unsigned int nAk4L1CaloJets;
+    std::vector<double> ak4L1CaloJetEt;
+    std::vector<double> ak4L1CaloJetEta;
+    std::vector<double> ak4L1CaloJetPhi;
+    std::vector<int>    ak4L1CaloJetBx;
+    std::vector<double> ak4L1CaloJetzVtx;
+
+    unsigned int nAk4L1PFJets;
+    std::vector<double> ak4L1PFJetEt;
+    std::vector<double> ak4L1PFJetEta;
+    std::vector<double> ak4L1PFJetPhi;
+    std::vector<int>    ak4L1PFJetBx;
+    std::vector<double> ak4L1PFJetzVtx;
+
+    unsigned int nAk4L1TKJets;
+    std::vector<double> ak4L1TKJetEt;
+    std::vector<double> ak4L1TKJetEta;
+    std::vector<double> ak4L1TKJetPhi;
+    std::vector<int>    ak4L1TKJetBx;
+    std::vector<double> ak4L1TKJetzVtx;
+
+    double l1MetCaloEt;
+    double l1MetCaloPhi;
+
+    double l1MetPFEt;
+    double l1MetPFPhi;
+
+    double l1MetTKEt;
+    double l1MetTKPhi;
 
 
 
