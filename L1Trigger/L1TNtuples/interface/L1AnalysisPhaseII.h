@@ -58,36 +58,29 @@ namespace L1Analysis
     void Reset() {l1extra_.Reset();}
 
     // Old style objects (Phase I)
-    void SetEm   (const edm::Handle<l1t::EGammaBxCollection> em,   unsigned maxL1Extra);
     void SetTau  (const edm::Handle<l1t::TauBxCollection>    tau,  unsigned maxL1Extra);
     void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
     void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
     void SetMuon (const edm::Handle<l1t::MuonBxCollection>   muon, unsigned maxL1Extra);
 
     // Add new standalone objects 
-    void SetEGCrystal   (const edm::Handle<l1t::EGammaBxCollection> EGCrystal,   unsigned maxL1Extra);
+    void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,   unsigned maxL1Extra);
     void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra);
 
     // Add L1TrackTriggerObjects
-    void SetTkEM          (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,     unsigned maxL1Extra);
-    void SetTkEG          (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,     unsigned maxL1Extra);
-    void SetTkEGCrystal   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGCrystal,     unsigned maxL1Extra);
-    void SetTkEMCrystal   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEMCrystal,     unsigned maxL1Extra);
-    void SetTkIsoEG(const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkIsoEG,     unsigned maxL1Extra);
+    void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,     unsigned maxL1Extra);
+    void SetTkEM   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,     unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> tkMuon,   unsigned maxL1Extra);
     void SetTkTau  (const  edm::Handle<l1t::L1TkTauParticleCollection> tkTau, unsigned maxL1Extra);
-    void SetTkJet  (const  edm::Handle<l1t::L1TkJetParticleCollection>  tkJet,    unsigned maxL1Extra);
-    void SetTkMet  (const  edm::Handle<l1t::L1TkEtMissParticleCollection> tkMets);
-    void SetTkMht  (const  edm::Handle<l1t::L1TkHTMissParticleCollection> tkMhts);
+
+    void SetTkJet  (const  edm::Handle<l1t::L1TkJetParticleCollection>  tkTrackerJet,    unsigned maxL1Extra);
+    void SetTkCaloJet  (const  edm::Handle<l1t::L1TkJetParticleCollection>  tkCaloJet,    unsigned maxL1Extra);
+    void SetTkMET  (const  edm::Handle<l1t::L1TkEtMissParticleCollection> trackerMets);
+    void SetTkMHT  (const  edm::Handle<l1t::L1TkHTMissParticleCollection> trackerMHTs);
 
     // Add new PFJet collections 
-    void SetCaloJet  (const    edm::Handle<reco::PFJetCollection>  CaloJet,    unsigned maxL1Extra);
     void SetPFJet  (const      edm::Handle<reco::PFJetCollection>  PFJet,    unsigned maxL1Extra);
-    void SetL1TKJet  (const    edm::Handle<reco::PFJetCollection>  L1TKJet,    unsigned maxL1Extra);
-
-    void SetL1METCalo(const edm::Handle< std::vector<reco::PFMET> > l1MetCalo);
     void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
-    void SetL1METTK(const edm::Handle< std::vector<reco::PFMET> > l1MetTK);
 
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
 

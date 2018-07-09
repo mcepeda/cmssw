@@ -21,25 +21,6 @@ namespace L1Analysis
     void Reset()
     {
 
-      // Phase I objects (Barrel only, no track match)
-      nEGs = 0;
-      egEt.clear();
-      egEta.clear();
-      egPhi.clear();
-      egIEt.clear();
-      egIEta.clear();
-      egIPhi.clear();
-      egIso.clear();
-      egBx.clear();
-      egTowerIPhi.clear();
-      egTowerIEta.clear();
-      egRawEt.clear();
-      egIsoEt.clear();
-      egFootprintEt.clear();
-      egNTT.clear();
-      egShape.clear();
-      egTowerHoE.clear();
-
       nTaus = 0;
       tauEt.clear();
       tauEta.clear();
@@ -114,7 +95,15 @@ namespace L1Analysis
       sumIPhi.clear();
       sumBx.clear(); 
 
-      //Track-Matched EG objects seeded by PhaseI Calo objects TkEM, TkEG
+      nEG = 0;
+      EGEt.clear();
+      EGEta.clear();
+      EGPhi.clear();
+      EGBx.clear();
+      EGIso.clear();
+      EGzVtx.clear();
+      EGHwQual.clear();      
+ 
       nTkEG = 0;
       tkEGEt.clear();
       tkEGEta.clear();
@@ -123,49 +112,13 @@ namespace L1Analysis
       tkEGTrkIso.clear();
       tkEGzVtx.clear();
 
-      nTkIsoEG = 0;
-      tkIsoEGEt.clear();
-      tkIsoEGEta.clear();
-      tkIsoEGPhi.clear();
-      tkIsoEGBx.clear();
-      tkIsoEGTrkIso.clear();
-      tkIsoEGzVtx.clear();
-
       nTkEM = 0;
       tkEMEt.clear();
       tkEMEta.clear();
       tkEMPhi.clear();
       tkEMBx.clear();
       tkEMTrkIso.clear();
-
-      // Tyler's Crystal electrons (Barrel) 
-
-      // We need to revise which branches are needed here, this is a starting point 
-
-      nEGCrystal = 0;
-      EGCrystalEt.clear();
-      EGCrystalEta.clear();
-      EGCrystalPhi.clear();
-      EGCrystalBx.clear();
-      EGCrystalIso.clear();
-      EGCrystalzVtx.clear();
-      EGCrystalHwQual.clear();      
- 
-      nTkEGCrystal = 0;
-      tkEGCrystalEt.clear();
-      tkEGCrystalEta.clear();
-      tkEGCrystalPhi.clear();
-      tkEGCrystalBx.clear();
-      tkEGCrystalTrkIso.clear();
-      tkEGCrystalzVtx.clear();
-
-      nTkEMCrystal = 0;
-      tkEMCrystalEt.clear();
-      tkEMCrystalEta.clear();
-      tkEMCrystalPhi.clear();
-      tkEMCrystalBx.clear();
-      tkEMCrystalTrkIso.clear();
-      tkEMCrystalzVtx.clear();
+      tkEMzVtx.clear();
 
       // TkTaus
       nTkTau = 0;
@@ -177,12 +130,19 @@ namespace L1Analysis
       tkTauzVtx.clear();
 
       // TkJets
-      nTkJets = 0;
-      tkJetEt.clear();
-      tkJetEta.clear();
-      tkJetPhi.clear();
-      tkJetBx.clear();
-      tkJetzVtx.clear();
+      nTrackerJets = 0;
+      trackerJetEt.clear();
+      trackerJetEta.clear();
+      trackerJetPhi.clear();
+      trackerJetBx.clear();
+      trackerJetzVtx.clear();
+
+      // TkCaloJets
+      nTkCaloJets = 0;
+      tkCaloJetEt.clear();
+      tkCaloJetEta.clear();
+      tkCaloJetPhi.clear();
+      tkCaloJetBx.clear();
 
       // tkTkMuons
       nTkMuons = 0;
@@ -198,71 +158,36 @@ namespace L1Analysis
       tkMuonQuality.clear();
       tkMuonzVtx.clear();
 
-      // TkMet
-      nTkMet = 0;
-      tkEt.clear();
-      tkMet.clear();
-      tkMetPhi.clear();
-      tkMetBx.clear();
+      // TrackerMet
+      nTrackerMet = 0;
+      trackerMetSumEt.clear();
+      trackerMetEt.clear();
+      trackerMetPhi.clear();
+      trackerMetBx.clear();
 
-      //TkMht
-      nTkMht = 0;
-      tkHt.clear();
-      tkMht.clear();
-      tkMhtPhi.clear();
-      tkMhtBx.clear();
+      //trackerMHT
+      nTrackerMHT = 0;
+      trackerHT.clear();
+      trackerMHT.clear();
+      trackerMHTPhi.clear();
+      trackerMHTBx.clear();
 
       // New Jet Collections
-      nAk4L1CaloJets = 0;
-      ak4L1CaloJetEt.clear();
-      ak4L1CaloJetEta.clear();
-      ak4L1CaloJetPhi.clear();
-      ak4L1CaloJetBx.clear();
-      ak4L1CaloJetzVtx.clear();
+      nPuppiJets = 0;
+      puppiJetEt.clear();
+      puppiJetEta.clear();
+      puppiJetPhi.clear();
+      puppiJetBx.clear();
+      puppiJetzVtx.clear();
 
-      nAk4L1PFJets = 0;
-      ak4L1PFJetEt.clear();
-      ak4L1PFJetEta.clear();
-      ak4L1PFJetPhi.clear();
-      ak4L1PFJetBx.clear();
-      ak4L1PFJetzVtx.clear();
-
-      nAk4L1TKJets = 0;
-      ak4L1TKJetEt.clear();
-      ak4L1TKJetEta.clear();
-      ak4L1TKJetPhi.clear();
-      ak4L1TKJetBx.clear();
-      ak4L1TKJetzVtx.clear();
-
-      l1MetCaloEt=0;
-      l1MetCaloPhi=0;
-
-      l1MetPFEt=0;
-      l1MetPFPhi=0;
-
-      l1MetTKEt=0;
-      l1MetTKPhi=0;
+      puppiMETEt=0;
+      puppiMETPhi=0;
+      puppiHT=0;
+      puppiMHTEt=0;
+      puppiMHTPhi=0;
 
     }
   
-    unsigned short int nEGs;
-    std::vector<float> egEt;
-    std::vector<float> egEta;
-    std::vector<float> egPhi;
-    std::vector<short int> egIEt;
-    std::vector<short int> egIEta;
-    std::vector<short int> egIPhi;
-    std::vector<short int> egIso;
-    std::vector<short int> egBx;
-    std::vector<short int> egTowerIPhi;
-    std::vector<short int> egTowerIEta;
-    std::vector<short int> egRawEt;
-    std::vector<short int> egIsoEt;
-    std::vector<short int> egFootprintEt;
-    std::vector<short int> egNTT;
-    std::vector<short int> egShape;
-    std::vector<short int> egTowerHoE;
- 
     unsigned short int nTaus;
     std::vector<float> tauEt;
     std::vector<float> tauEta;
@@ -336,6 +261,15 @@ namespace L1Analysis
     std::vector<float> sumBx;
 
  
+    unsigned int nEG;
+    std::vector<double> EGEt;
+    std::vector<double> EGEta;
+    std::vector<double> EGPhi;
+    std::vector<int>    EGBx;
+    std::vector<double> EGIso;
+    std::vector<double> EGzVtx;
+    std::vector<int>    EGHwQual;
+
     unsigned int nTkEG;
     std::vector<double> tkEGEt;
     std::vector<double> tkEGEta;
@@ -344,45 +278,13 @@ namespace L1Analysis
     std::vector<double> tkEGTrkIso;
     std::vector<double> tkEGzVtx;
 
-    unsigned int nTkIsoEG;
-    std::vector<double> tkIsoEGEt;
-    std::vector<double> tkIsoEGEta;
-    std::vector<double> tkIsoEGPhi;
-    std::vector<int>    tkIsoEGBx;
-    std::vector<double> tkIsoEGTrkIso;
-    std::vector<double> tkIsoEGzVtx;
-
     unsigned int nTkEM;
     std::vector<double> tkEMEt;
     std::vector<double> tkEMEta;
     std::vector<double> tkEMPhi;
     std::vector<int>    tkEMBx;
     std::vector<double> tkEMTrkIso;
-
-    unsigned int nEGCrystal;
-    std::vector<double> EGCrystalEt;
-    std::vector<double> EGCrystalEta;
-    std::vector<double> EGCrystalPhi;
-    std::vector<int>    EGCrystalBx;
-    std::vector<double> EGCrystalIso;
-    std::vector<double> EGCrystalzVtx;
-    std::vector<int>    EGCrystalHwQual;
-
-    unsigned int nTkEGCrystal;
-    std::vector<double> tkEGCrystalEt;
-    std::vector<double> tkEGCrystalEta;
-    std::vector<double> tkEGCrystalPhi;
-    std::vector<int>    tkEGCrystalBx;
-    std::vector<double> tkEGCrystalTrkIso;
-    std::vector<double> tkEGCrystalzVtx;
-
-    unsigned int nTkEMCrystal;
-    std::vector<double> tkEMCrystalEt;
-    std::vector<double> tkEMCrystalEta;
-    std::vector<double> tkEMCrystalPhi;
-    std::vector<int>    tkEMCrystalBx;
-    std::vector<double> tkEMCrystalTrkIso;
-    std::vector<double> tkEMCrystalzVtx;
+    std::vector<double> tkEMzVtx;
 
     unsigned int nTkTau;
     std::vector<double> tkTauEt;
@@ -392,12 +294,19 @@ namespace L1Analysis
     std::vector<double> tkTauTrkIso;
     std::vector<double> tkTauzVtx;
 
-    unsigned int nTkJets;
-    std::vector<double> tkJetEt;
-    std::vector<double> tkJetEta;
-    std::vector<double> tkJetPhi;
-    std::vector<int>    tkJetBx;
-    std::vector<double> tkJetzVtx;
+    unsigned int nTrackerJets;
+    std::vector<double> trackerJetEt;
+    std::vector<double> trackerJetEta;
+    std::vector<double> trackerJetPhi;
+    std::vector<int>    trackerJetBx;
+    std::vector<double> trackerJetzVtx;
+
+    unsigned int nTkCaloJets;
+    std::vector<double> tkCaloJetEt;
+    std::vector<double> tkCaloJetEta;
+    std::vector<double> tkCaloJetPhi;
+    std::vector<int>    tkCaloJetBx;
+    std::vector<double> tkCaloJetzVtx;
 
     unsigned int nTkMuons;
     std::vector<double>   tkMuonEt;
@@ -413,48 +322,30 @@ namespace L1Analysis
     std::vector<unsigned int>      tkMuonQuality;
     std::vector<double>   tkMuonzVtx;
 
-    unsigned int nTkMet;
-    std::vector<double> tkEt;
-    std::vector<double> tkMet;
-    std::vector<double> tkMetPhi;
-    std::vector<double> tkMetBx;
+    unsigned int nTrackerMet;
+    std::vector<double> trackerMetSumEt;
+    std::vector<double> trackerMetEt;
+    std::vector<double> trackerMetPhi;
+    std::vector<double> trackerMetBx;
 
-    unsigned int nTkMht;
-    std::vector<double> tkHt;
-    std::vector<double> tkMht;
-    std::vector<double> tkMhtPhi;
-    std::vector<double> tkMhtBx;
+    unsigned int nTrackerMHT;
+    std::vector<double> trackerHT;
+    std::vector<double> trackerMHT;
+    std::vector<double> trackerMHTPhi;
+    std::vector<double> trackerMHTBx;
 
-    unsigned int nAk4L1CaloJets;
-    std::vector<double> ak4L1CaloJetEt;
-    std::vector<double> ak4L1CaloJetEta;
-    std::vector<double> ak4L1CaloJetPhi;
-    std::vector<int>    ak4L1CaloJetBx;
-    std::vector<double> ak4L1CaloJetzVtx;
+    unsigned int nPuppiJets;
+    std::vector<double> puppiJetEt;
+    std::vector<double> puppiJetEta;
+    std::vector<double> puppiJetPhi;
+    std::vector<int>    puppiJetBx;
+    std::vector<double> puppiJetzVtx;
 
-    unsigned int nAk4L1PFJets;
-    std::vector<double> ak4L1PFJetEt;
-    std::vector<double> ak4L1PFJetEta;
-    std::vector<double> ak4L1PFJetPhi;
-    std::vector<int>    ak4L1PFJetBx;
-    std::vector<double> ak4L1PFJetzVtx;
-
-    unsigned int nAk4L1TKJets;
-    std::vector<double> ak4L1TKJetEt;
-    std::vector<double> ak4L1TKJetEta;
-    std::vector<double> ak4L1TKJetPhi;
-    std::vector<int>    ak4L1TKJetBx;
-    std::vector<double> ak4L1TKJetzVtx;
-
-    double l1MetCaloEt;
-    double l1MetCaloPhi;
-
-    double l1MetPFEt;
-    double l1MetPFPhi;
-
-    double l1MetTKEt;
-    double l1MetTKPhi;
-
+    double puppiMETEt;
+    double puppiMETPhi;
+    double puppiHT;
+    double puppiMHTEt;
+    double puppiMHTPhi;
 
 
   }; 
