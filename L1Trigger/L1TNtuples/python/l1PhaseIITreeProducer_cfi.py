@@ -22,9 +22,7 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
  
    muonKalman = cms.InputTag("simKBmtfDigis","BMTF"),
 
-   l1CaloMet = cms.InputTag("l1MetCalo"),
    l1PFMet = cms.InputTag("l1MetPuppi"),
-   l1TKMet = cms.InputTag("l1MetTightTKV"),
 
    maxL1Extra = cms.uint32(20)
 )
