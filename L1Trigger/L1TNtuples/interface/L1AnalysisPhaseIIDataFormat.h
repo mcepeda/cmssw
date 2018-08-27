@@ -235,6 +235,12 @@ namespace L1Analysis
       puppiMHTEt.clear();
       puppiMHTPhi.clear();
       nPuppiMHT=0;
+
+      nPFMuons = 0;
+      pfMuonEt.clear();
+      pfMuonEta.clear();
+      pfMuonPhi.clear();
+
     }
  
     float z0Puppi;
@@ -450,6 +456,11 @@ namespace L1Analysis
     std::vector<double> puppiMHTEt;
     std::vector<double> puppiMHTPhi;
      unsigned int nPuppiMHT;
+
+    unsigned int  nPFMuons;
+    std::vector<double> pfMuonEt;
+    std::vector<double> pfMuonEta;
+    std::vector<double> pfMuonPhi;
 
   }; 
 }

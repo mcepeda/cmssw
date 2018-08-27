@@ -65,7 +65,7 @@ Implementation:
 #include "DataFormats/L1TVertex/interface/Vertex.h"
 
 #include "DataFormats/JetReco/interface/PFJet.h"
-
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h"
 
 // ROOT output stuff
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -130,12 +130,12 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::RegionalMuonCandBxCollection> muonKalman_;
 
                 edm::EDGetTokenT<std::vector<reco::PFMET> > l1PFMet_;
+                edm::EDGetTokenT< std::vector<l1t::PFCandidate> > l1PFCandidates_;  
 
                 edm::EDGetTokenT<float> z0PuppiToken_;
                 edm::EDGetTokenT<l1t::VertexCollection> l1vertextdrToken_;
                 edm::EDGetTokenT<l1t::VertexCollection> l1verticesToken_;
                 edm::EDGetTokenT<l1t::L1TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
-
 
 
 
@@ -191,6 +191,8 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
         muonKalman_ = consumes<l1t::RegionalMuonCandBxCollection> (iConfig.getParameter<edm::InputTag>("muonKalman"));
 
         l1PFMet_  = consumes< std::vector<reco::PFMET> > (iConfig.getParameter<edm::InputTag>("l1PFMet"));
+
+        l1PFCandidates_ =consumes <std::vector<l1t::PFCandidate> > (iConfig.getParameter<edm::InputTag>("l1PFCandidates")); 
 
         z0PuppiToken_ = consumes< float > (iConfig.getParameter<edm::InputTag>("zoPuppi"));
         l1vertextdrToken_ = consumes< l1t::VertexCollection> (iConfig.getParameter<edm::InputTag>("l1vertextdr"));
@@ -263,6 +265,10 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         iEvent.getByToken(ak4L1PF_,ak4L1PFs);
         edm::Handle< std::vector<reco::PFMET> > l1PFMet;
         iEvent.getByToken(l1PFMet_, l1PFMet);
+
+        edm::Handle<std::vector<l1t::PFCandidate>> l1PFCandidates;
+        iEvent.getByToken(l1PFCandidates_,l1PFCandidates);
+
 
         // now also fill vertices 
 
@@ -426,6 +432,12 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
                 l1Extra->SetL1METPF(l1PFMet);
         } else{
                 edm::LogWarning("MissingProduct") << "L1PFMet missing"<<std::endl;
+        }
+
+        if(l1PFCandidates.isValid()){
+                l1Extra->SetPFObjects(l1PFCandidates,maxL1Extra_);  
+        } else {
+                 edm::LogWarning("MissingProduct") << "L1PFCandidates missing, no L1PFMuons will be found"<<std::endl;   
         }
 
         tree_->Fill();

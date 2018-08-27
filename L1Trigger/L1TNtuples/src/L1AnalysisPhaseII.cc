@@ -279,14 +279,24 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::L1TkMuonPar
     l1extra_.tkMuonPhi.push_back(it->phi());
     l1extra_.tkMuonChg.push_back(it->charge());
     l1extra_.tkMuonTrkIso.push_back(it->getTrkIsol());
+    if(!it->isEMTF()){
     l1extra_.tkMuonMuRefPt.push_back(it->getMuRef()->hwPt()*0.5);
     l1extra_.tkMuonMuRefEta.push_back(it->getMuRef()->hwEta()*0.010875);
     l1extra_.tkMuonMuRefPhi.push_back(l1t::MicroGMTConfiguration::calcGlobalPhi( it->getMuRef()->hwPhi(), it->getMuRef()->trackFinderType(), it->getMuRef()->processor() )*2*M_PI/576);
     l1extra_.tkMuonDRMuTrack.push_back(it->dR());
     l1extra_.tkMuonNMatchedTracks.push_back(it->nTracksMatched());
+    l1extra_.tkMuonQuality .push_back(it->getMuRef()->hwQual());
+    }else {
+    l1extra_.tkMuonMuRefPt.push_back(-777);
+    l1extra_.tkMuonMuRefEta.push_back(-777);
+    l1extra_.tkMuonMuRefPhi.push_back(-777);
+    l1extra_.tkMuonDRMuTrack.push_back(-777);
+    l1extra_.tkMuonNMatchedTracks.push_back(0);
+    l1extra_.tkMuonQuality .push_back(999);
+    }
+
     l1extra_.tkMuonzVtx.push_back(it->getTrkzVtx());
     l1extra_.tkMuonBx .push_back(0); //it->bx());
-    l1extra_.tkMuonQuality .push_back(it->getMuRef()->hwQual());
 
     l1extra_.nTkMuons++;
   }
@@ -401,4 +411,18 @@ void L1Analysis::L1AnalysisPhaseII::SetL1METPF(const edm::Handle< std::vector<re
   l1extra_.puppiMETPhi = met.phi();
 }
 
+void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> >  l1pfCandidates,  unsigned maxL1Extra)
+{
+      for (unsigned int i=0; i<l1pfCandidates->size() && l1extra_.nPFMuons<maxL1Extra; i++){
+           //enum Kind { ChargedHadron=0, Electron=1, NeutralHadron=2, Photon=3, Muon=4 };
+            if(abs(l1pfCandidates->at(i).id())==4){
+                  std::cout<<l1pfCandidates->at(i).pt()<<"   "<<l1pfCandidates->at(i).id()<<"   "<<l1pfCandidates->at(i).eta()<<std::endl;
+                  l1extra_.pfMuonEt.push_back(l1pfCandidates->at(i).pt()); 
+                  l1extra_.pfMuonEta.push_back(l1pfCandidates->at(i).eta());
+                  l1extra_.pfMuonPhi.push_back(l1pfCandidates->at(i).phi());
+                  l1extra_.nPFMuons++;
+            }
+      }
+
+}
 

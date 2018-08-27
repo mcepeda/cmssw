@@ -42,6 +42,8 @@ namespace l1t
       float dR()  const { return dR_;}
       int nTracksMatched() const { return nTracksMatch_;}
 
+      bool isEMTF() const {return isEMTF_;}
+
       unsigned int quality()  const {return quality_;}
 
       void setTrkPtr(const edm::Ptr< L1TTTrackType >& p) {trkPtr_ = p;}
@@ -53,6 +55,8 @@ namespace l1t
       void setNTracksMatched(int nTracksMatch) { nTracksMatch_=nTracksMatch;}
 
       void setQuality(unsigned int q){ quality_ = q;}  // this is not filled
+
+      void setIsEMTF(bool isEMTF) { isEMTF_=isEMTF;}
 
     private:
 
@@ -67,7 +71,7 @@ namespace l1t
       float dR_;
       int nTracksMatch_;
       unsigned int quality_;
-
+      bool isEMTF_;
 
   };
 }

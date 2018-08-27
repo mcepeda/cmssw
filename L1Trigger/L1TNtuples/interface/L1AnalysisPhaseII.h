@@ -49,6 +49,7 @@
 
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h" 
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
@@ -92,6 +93,7 @@ namespace L1Analysis
     // Add new PFJet collections 
     void SetPFJet  (const      edm::Handle<reco::PFJetCollection>  PFJet,    unsigned maxL1Extra);
     void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
+    void SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> > l1pfCandidates,unsigned maxL1Extra);
 
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
 
