@@ -315,7 +315,7 @@ L1TkMuonProducer::runOnMTFCollection_v1(const edm::Handle<RegionalMuonCandBxColl
         l1tkmu.setTrkzVtx( (float)tkv3.z() );
         l1tkmu.setdR(drmin);
         l1tkmu.setNTracksMatched(nTracksMatch);   
-
+        l1tkmu.setMuonDetector(0);
         tkMuons.push_back(l1tkmu);
       }
     }
@@ -356,7 +356,7 @@ L1TkMuonProducer::runOnMTFCollection_v2(const edm::Handle<EMTFTrackCollection>& 
     float trkisol = -999; // FIXME: now doing as in the TP algo
     L1TkMuonParticle l1tkmu(l1tkp4, l1muRef, l1tkPtr, trkisol);
     l1tkmu.setTrkzVtx( (float)tkv3.z() );
-    
+    l1tkmu.setMuonDetector(3); 
     tkMuons.push_back(l1tkmu);
   }
 

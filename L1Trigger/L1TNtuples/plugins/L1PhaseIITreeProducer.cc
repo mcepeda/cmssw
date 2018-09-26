@@ -65,6 +65,7 @@ Implementation:
 #include "DataFormats/L1TVertex/interface/Vertex.h"
 
 #include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/L1Trigger/interface/L1PFTau.h"
 
 
 // ROOT output stuff
@@ -137,6 +138,7 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::L1TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
 
 
+                edm::EDGetTokenT<l1t::L1PFTauCollection> L1PFTauToken_;
 
 
 };
@@ -197,6 +199,8 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
         l1verticesToken_  = consumes< l1t::VertexCollection> (iConfig.getParameter<edm::InputTag>("l1vertices"));
         l1TkPrimaryVertexToken_ = consumes< l1t::L1TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"));
 
+        L1PFTauToken_ = consumes<l1t::L1PFTauCollection>(iConfig.getParameter<edm::InputTag>("L1PFTauToken"));
+
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
 
         l1Extra     = new L1Analysis::L1AnalysisPhaseII();
@@ -244,6 +248,10 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<l1t::L1TkTauParticleCollection> tkTau;
         iEvent.getByToken(tkTauToken_, tkTau);
 
+        edm::Handle<l1t::L1PFTauCollection> l1PFTau;
+        iEvent.getByToken(L1PFTauToken_,l1PFTau);
+
+
         edm::Handle<l1t::JetBxCollection> jet;
         edm::Handle<l1t::EtSumBxCollection> sums;
         iEvent.getByToken(jetToken_,  jet);
@@ -277,6 +285,8 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 
         edm::Handle<std::vector<l1t::L1TkPrimaryVertex> > l1TkPrimaryVertex;
         iEvent.getByToken(l1TkPrimaryVertexToken_,l1TkPrimaryVertex);
+
+
 
         float vertexTDRZ0=-999; 
         if(l1vertextdr->size()>0) vertexTDRZ0=l1vertextdr->at(0).z0();
@@ -427,6 +437,15 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         } else{
                 edm::LogWarning("MissingProduct") << "L1PFMet missing"<<std::endl;
         }
+
+        if(l1PFTau.isValid()){
+                l1Extra->SetPFTaus(l1PFTau,maxL1Extra_);
+        } else{
+                edm::LogWarning("MissingProduct") << "L1PFTaus missing"<<std::endl;
+        }
+
+
+
 
         tree_->Fill();
 

@@ -111,7 +111,8 @@ namespace L1Analysis
       EGIso.clear();
       EGzVtx.clear();
       EGHwQual.clear();      
- 
+      EGHGC.clear();
+
       nTkEG = 0;
       tkEGEt.clear();
       tkEGEta.clear();
@@ -123,6 +124,7 @@ namespace L1Analysis
       tkEGEGRefPt.clear(); 
       tkEGEGRefEta.clear();
       tkEGEGRefPhi.clear();
+      tkEGHGC.clear();
 
 
 
@@ -137,6 +139,7 @@ namespace L1Analysis
       tkEGLooseEGRefPt.clear();
       tkEGLooseEGRefEta.clear();
       tkEGLooseEGRefPhi.clear();
+      tkEGHGC.clear();
 
       nTkEM = 0;
       tkEMEt.clear();
@@ -149,6 +152,7 @@ namespace L1Analysis
       tkEMEGRefPt.clear();
       tkEMEGRefEta.clear();
       tkEMEGRefPhi.clear();
+      tkEMHGC.clear();
 
       // TkTaus
       nTkTau = 0;
@@ -206,6 +210,7 @@ namespace L1Analysis
       tkMuonMuRefEta.clear();
       tkMuonDRMuTrack.clear();
       tkMuonNMatchedTracks.clear();
+      tkMuonRegion.clear();
 
       // TrackerMet
       nTrackerMet = 0;
@@ -235,6 +240,21 @@ namespace L1Analysis
       puppiMHTEt.clear();
       puppiMHTPhi.clear();
       nPuppiMHT=0;
+
+      nPFMuons = 0;
+      pfMuonEt.clear();
+      pfMuonEta.clear();
+      pfMuonPhi.clear();
+      pfMuonzVtx.clear();
+
+      nPFTaus = 0; 
+      pfTauEt.clear();
+      pfTauEta.clear();
+      pfTauPhi.clear();
+      pfTauChargedIso.clear();
+      pfTauType.clear();
+
+
     }
  
     float z0Puppi;
@@ -326,6 +346,7 @@ namespace L1Analysis
     std::vector<double> EGIso;
     std::vector<double> EGzVtx;
     std::vector<int>    EGHwQual;
+    std::vector<double> EGHGC;
 
     unsigned int nTkEG;
     std::vector<double> tkEGEt;
@@ -338,6 +359,7 @@ namespace L1Analysis
     std::vector<double>   tkEGEGRefPt;
     std::vector<double>   tkEGEGRefEta;
     std::vector<double>   tkEGEGRefPhi;
+    std::vector<bool> tkEGHGC;
 
 
     unsigned int ntkEGLoose;
@@ -351,6 +373,7 @@ namespace L1Analysis
     std::vector<double>   tkEGLooseEGRefPt;
     std::vector<double>   tkEGLooseEGRefEta;
     std::vector<double>   tkEGLooseEGRefPhi;
+    std::vector<bool> tkEGLooseHGC;
 
     unsigned int nTkEM;
     std::vector<double> tkEMEt;
@@ -363,6 +386,7 @@ namespace L1Analysis
     std::vector<double>   tkEMEGRefPt;
     std::vector<double>   tkEMEGRefEta;
     std::vector<double>   tkEMEGRefPhi;
+    std::vector<bool> tkEMHGC;
 
     unsigned int nTkTau;
     std::vector<double> tkTauEt;
@@ -422,6 +446,7 @@ namespace L1Analysis
     std::vector<double>  tkMuonMuRefEta;
     std::vector<double>  tkMuonDRMuTrack;
     std::vector<double>  tkMuonNMatchedTracks;
+    std::vector<double>   tkMuonRegion;
 
     unsigned int nTrackerMet;
     std::vector<double> trackerMetSumEt;
@@ -450,6 +475,22 @@ namespace L1Analysis
     std::vector<double> puppiMHTEt;
     std::vector<double> puppiMHTPhi;
      unsigned int nPuppiMHT;
+
+    unsigned int  nPFMuons;
+    std::vector<double> pfMuonEt;
+    std::vector<double> pfMuonEta;
+    std::vector<double> pfMuonPhi;
+    std::vector<double>pfMuonzVtx;
+
+    unsigned int  nPFTaus;
+    std::vector<double> pfTauEt;
+    std::vector<double> pfTauEta;
+    std::vector<double> pfTauPhi;
+    std::vector<double> pfTauType;
+    std::vector<double> pfTauChargedIso;
+
+
+
 
   }; 
 }

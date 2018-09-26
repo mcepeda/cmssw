@@ -43,6 +43,7 @@ void L1EGammaEEProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
         l1t::EGamma eg=l1t::EGamma(cl3d->p4());    
         eg.setHwQual(cl3d->hwQual()); // saved for filtering later here 
         eg.setHwIso(1); // for now 
+        eg.setIsoEt(-1); // just temporarily as a dummy value
         l1EgammaBxCollection->push_back(0,eg);
 //      }
     }
