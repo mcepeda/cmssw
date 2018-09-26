@@ -359,19 +359,26 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollec
   double mHT30_px=0, mHT30_py=0, HT30=0;
 
   // This should not be hardcoded here!!! 
-//   Until V2p2
-//   double offset[10]={-12.058, -12.399, -11.728, -10.557, -5.391,  4.586,  3.542,  1.825, -6.946, -17.857};
-//   double scale[10]={ 1.127,  1.155,  1.124,  1.192,  1.289,  0.912,  1.008,  1.298,  1.650,  1.402};
-//   double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
-   double offset[10]={-9.922, -10.116, -12.620, -9.839, -3.331,  33.446,  10.677,  10.830,  5.794, -33.316};
-   double scale[10]={ 1.123,  1.143,  1.175,  1.097,  1.199,  0.672,  0.953,  1.153,  1.343,  1.812};
+// From V4
+   double offset[10]={-6.664, -5.996, -6.798,  3.459,  13.866,  0,    0,      0,    0,        0.};
+   double scale[10]= {1.052,   1.065,  1.121,  1.100,   1.157,  1,    1,      1,    1,        1.};
    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
+//   From  V2p2 to V4
+//    double offset[10]={-9.922, -10.116, -12.620, -9.839, -3.331,  33.446,  10.677,  10.830,  5.794, -33.316};
+//    double scale[10]={ 1.123,  1.143,  1.175,  1.097,  1.199,  0.672,  0.953,  1.153,  1.343,  1.812};
+//    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
+//   Until V2p2
+//    double offset[10]={-12.058, -12.399, -11.728, -10.557, -5.391,  4.586,  3.542,  1.825, -6.946, -17.857};
+//    double scale[10]={ 1.127,  1.155,  1.124,  1.192,  1.289,  0.912,  1.008,  1.298,  1.650,  1.402};
+//    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
 
 
   for(reco::PFJetCollection::const_iterator it=PFJet->begin(); it!=PFJet->end() && l1extra_.nPuppiJets<maxL1Extra; it++){
     double corrBin=1, offsetBin=0;
     for(int j=0; j<10; j++) {if(corrBin==1 && fabs(it->eta())<etaBin[j]) {corrBin=scale[j]; offsetBin=offset[j];}}
     double ptcorr=(it->pt()-offsetBin)/corrBin;
+      if (ptcorr<0) ptcorr=0; // sanity check for borderline cases / low pt jets
+      //std::cout<<"eta: "<<it->eta()<<"    pt:"<<it->pt()<<" -  scale:"<<corrBin<<"  off:"<<offsetBin<<" ->  cor: "<<ptcorr<<std::endl;
     reco::Particle::PolarLorentzVector corrP4= reco::Particle::PolarLorentzVector(ptcorr,it->eta(),it->phi(),it->mass());
     l1extra_.puppiJetEt .push_back(corrP4.pt());
     l1extra_.puppiJetEtUnCorr .push_back(it->et());
