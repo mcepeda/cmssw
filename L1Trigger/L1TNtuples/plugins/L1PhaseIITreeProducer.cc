@@ -66,7 +66,7 @@ Implementation:
 
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
-
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h"
 
 // ROOT output stuff
 #include "FWCore/ServiceRegistry/interface/Service.h"
@@ -139,7 +139,7 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
 
 
                 edm::EDGetTokenT<l1t::L1PFTauCollection> L1PFTauToken_;
-
+                edm::EDGetTokenT< std::vector<l1t::PFCandidate> > l1PFCandidates_; 
 
 };
 
@@ -199,6 +199,7 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
         l1verticesToken_  = consumes< l1t::VertexCollection> (iConfig.getParameter<edm::InputTag>("l1vertices"));
         l1TkPrimaryVertexToken_ = consumes< l1t::L1TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"));
 
+        l1PFCandidates_ =consumes <std::vector<l1t::PFCandidate> > (iConfig.getParameter<edm::InputTag>("l1PFCandidates")); 
         L1PFTauToken_ = consumes<l1t::L1PFTauCollection>(iConfig.getParameter<edm::InputTag>("L1PFTauToken"));
 
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
@@ -251,6 +252,8 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<l1t::L1PFTauCollection> l1PFTau;
         iEvent.getByToken(L1PFTauToken_,l1PFTau);
 
+        edm::Handle<std::vector<l1t::PFCandidate>> l1PFCandidates;
+        iEvent.getByToken(l1PFCandidates_,l1PFCandidates);
 
         edm::Handle<l1t::JetBxCollection> jet;
         edm::Handle<l1t::EtSumBxCollection> sums;
@@ -436,6 +439,12 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
                 l1Extra->SetL1METPF(l1PFMet);
         } else{
                 edm::LogWarning("MissingProduct") << "L1PFMet missing"<<std::endl;
+        }
+
+        if(l1PFCandidates.isValid()){
+                l1Extra->SetPFObjects(l1PFCandidates,maxL1Extra_);  
+        } else {
+                 edm::LogWarning("MissingProduct") << "L1PFCandidates missing, no L1PFMuons will be found"<<std::endl;   
         }
 
         if(l1PFTau.isValid()){

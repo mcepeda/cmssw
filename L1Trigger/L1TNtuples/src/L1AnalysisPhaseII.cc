@@ -445,12 +445,13 @@ void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::
 void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1PFTau> >  l1pfTaus,  unsigned maxL1Extra)
 {
 
-      for (unsigned int i=0; i<l1pfTaus->size() && l1extra_.nPFMuons<maxL1Extra; i++){
+      for (unsigned int i=0; i<l1pfTaus->size() && l1extra_.nPFTaus<maxL1Extra; i++){
                    l1extra_.pfTauEt.push_back(l1pfTaus->at(i).pt());
                    l1extra_.pfTauEta.push_back(l1pfTaus->at(i).eta());
                    l1extra_.pfTauPhi.push_back(l1pfTaus->at(i).phi());
                    l1extra_.pfTauType.push_back(l1pfTaus->at(i).tauType());
                    l1extra_.pfTauChargedIso.push_back(l1pfTaus->at(i).chargedIso());
+                   l1extra_.nPFTaus++;            
       }
 
 }
