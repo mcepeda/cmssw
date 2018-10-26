@@ -53,6 +53,7 @@ namespace l1t
 
       const L1MuKBMTCombinedStubRefVector& getBarrelStubs() const { return barrelStubs_; }
       unsigned int quality()  const {return quality_;}
+      unsigned int muonDetector() const {return muonDetector_;}  
 
       void setTrkPtr(const edm::Ptr< L1TTTrackType >& p) {trkPtr_ = p;}
 
@@ -64,7 +65,7 @@ namespace l1t
 
       void setQuality(unsigned int q){ quality_ = q;}  // this is not filled
       void addBarrelStub(const L1MuKBMTCombinedStubRef&);
-
+      void setMuonDetector(unsigned int detector) {muonDetector_=detector;}
 
     private:
 
@@ -82,7 +83,7 @@ namespace l1t
       float dR_;
       int nTracksMatch_;
       unsigned int quality_;
-
+      int muonDetector_;
 
   };
 }
