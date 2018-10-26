@@ -67,7 +67,7 @@ private:
   // the TP algorithm
   void runOnMTFCollection_v1(const edm::Handle<RegionalMuonCandBxCollection>&,
                           const edm::Handle<L1TTTrackCollectionType>&,
-                          L1TkMuonParticleCollection& tkMuons) const;
+                          L1TkMuonParticleCollection& tkMuons, const int detector) const;
   
   // algo for endcap regions using dynamic windows for making the match
   void runOnMTFCollection_v2(const edm::Handle<EMTFTrackCollection>&,
@@ -194,10 +194,10 @@ L1TkMuonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   L1TkMuonParticleCollection oc_emtf_tkmuon;
 
   // process each of the MTF collections separately! -- we don't want to filter the muons
-  runOnMTFCollection_v1(l1bmtfH, l1tksH, oc_bmtf_tkmuon);
-  runOnMTFCollection_v1(l1omtfH, l1tksH, oc_omtf_tkmuon);
+  runOnMTFCollection_v1(l1bmtfH, l1tksH, oc_bmtf_tkmuon,1);
+  runOnMTFCollection_v1(l1omtfH, l1tksH, oc_omtf_tkmuon,2);
   if(emtfMatchAlgoVersion_ == kTP) 
-    runOnMTFCollection_v1(l1emtfH, l1tksH, oc_emtf_tkmuon);
+    runOnMTFCollection_v1(l1emtfH, l1tksH, oc_emtf_tkmuon,3);
   else if (emtfMatchAlgoVersion_ == kDynamicWindows) 
     runOnMTFCollection_v2(l1emtfTCH, l1tksH, oc_emtf_tkmuon);
   else
@@ -216,7 +216,7 @@ L1TkMuonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 void
 L1TkMuonProducer::runOnMTFCollection_v1(const edm::Handle<RegionalMuonCandBxCollection>& muonH,
                                      const edm::Handle<L1TTTrackCollectionType>& l1tksH,
-                                     L1TkMuonParticleCollection& tkMuons) const
+                                     L1TkMuonParticleCollection& tkMuons,const int detector) const
 {
   const L1TTTrackCollectionType& l1tks = (*l1tksH.product());
   const RegionalMuonCandBxCollection& l1mtfs = (*muonH.product());
@@ -315,7 +315,7 @@ L1TkMuonProducer::runOnMTFCollection_v1(const edm::Handle<RegionalMuonCandBxColl
         l1tkmu.setTrkzVtx( (float)tkv3.z() );
         l1tkmu.setdR(drmin);
         l1tkmu.setNTracksMatched(nTracksMatch);   
-
+        l1tkmu.setMuonDetector(detector);
         tkMuons.push_back(l1tkmu);
       }
     }
@@ -356,7 +356,7 @@ L1TkMuonProducer::runOnMTFCollection_v2(const edm::Handle<EMTFTrackCollection>& 
     float trkisol = -999; // FIXME: now doing as in the TP algo
     L1TkMuonParticle l1tkmu(l1tkp4, l1muRef, l1tkPtr, trkisol);
     l1tkmu.setTrkzVtx( (float)tkv3.z() );
-    
+    l1tkmu.setMuonDetector(3); 
     tkMuons.push_back(l1tkmu);
   }
 
