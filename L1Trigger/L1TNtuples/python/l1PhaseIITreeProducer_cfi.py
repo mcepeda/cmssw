@@ -15,6 +15,7 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    tkTauToken = cms.InputTag("L1TkTauFromCalo",""), # ?
    TkGlbMuonToken = cms.InputTag("L1TkGlbMuons",""),
    TkMuonToken = cms.InputTag("L1TkMuons",""),                                            
+   TkMuonStubsToken = cms.InputTag("l1StubMatchedMuons",""),
 
    tkTrackerJetToken = cms.InputTag("L1TrackerJets","L1TrackerJets"),                                            
    tkCaloJetToken = cms.InputTag("L1TkCaloJets","L1TkCaloJets"),
@@ -22,6 +23,7 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    tkMhtTokens = cms.VInputTag( cms.InputTag("L1TrackerHTMiss5GeV","L1TrackerHTMiss"),cms.InputTag("L1TrackerHTMiss10GeV","L1TrackerHTMiss"),cms.InputTag("L1TrackerHTMiss","L1TrackerHTMiss"),cms.InputTag("L1TrackerHTMiss20GeV","L1TrackerHTMiss"),cms.InputTag("L1TrackerHTMiss30GeV","L1TrackerHTMiss")),
 
    ak4L1PF = cms.InputTag("ak4L1Puppi"),
+   l1PFCandidates = cms.InputTag("l1pfProducer","Puppi"),
  
    muonKalman = cms.InputTag("simKBmtfDigis","BMTF"),
 
@@ -31,6 +33,8 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    l1vertextdr = cms.InputTag("VertexProducer","l1vertextdr"),
    l1vertices = cms.InputTag("VertexProducer","l1vertices"),
    l1TkPrimaryVertex= cms.InputTag("L1TkPrimaryVertex",""),
+
+   L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),   
 
    maxL1Extra = cms.uint32(20)
 )
@@ -105,7 +109,8 @@ L1TrackerHTMiss30GeV.jet_maxEta = cms.double(2.4)
 L1TrackerHTMiss30GeV.jet_minPt = cms.double(30.0)
 L1TrackerHTMiss30GeV.UseCaloJets = cms.bool(False)
 
+from L1Trigger.L1TTrackMatch.L1TTrackerPlusStubs_cfi import l1StubMatchedMuons 
 
-extraCollectionsMenuTree=cms.Path(L1TrackerHTMiss5GeV* L1TrackerHTMiss10GeV*L1TrackerHTMiss20GeV*L1TrackerHTMiss30GeV*L1TkElectronsCrystal*L1TkPhotonsCrystal*L1TkElectronsHGC*L1TkPhotonsHGC*L1TkElectronsLooseCrystal*L1TkElectronsLooseHGC*l1PhaseIITree*genTree)
+extraCollectionsMenuTree=cms.Path(L1TrackerHTMiss5GeV* L1TrackerHTMiss10GeV*L1TrackerHTMiss20GeV*L1TrackerHTMiss30GeV*L1TkElectronsCrystal*L1TkPhotonsCrystal*L1TkElectronsHGC*L1TkPhotonsHGC*L1TkElectronsLooseCrystal*L1TkElectronsLooseHGC*l1StubMatchedMuons)
 
 

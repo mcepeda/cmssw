@@ -167,6 +167,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGIso.push_back(it->isoEt());
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
+    l1extra_.EGHGC.push_back( it->isoEt()<0 );
     l1extra_.nEG++;
   }
 }
@@ -187,6 +188,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
     l1extra_.tkEGEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkEGEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGBx.push_back(0);//it->bx());
+    l1extra_.tkEGHGC.push_back( it->getEGRef()->isoEt()<0 );
     l1extra_.nTkEG++;
   }}
 }
@@ -205,6 +207,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
     l1extra_.tkEGLooseEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkEGLooseEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGLooseBx.push_back(0);//it->bx());
+    l1extra_.tkEGLooseHGC.push_back( it->getEGRef()->isoEt()<0 );
     l1extra_.ntkEGLoose++;
   }}
 }
@@ -222,7 +225,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.tkEMEGRefPt.push_back(it->getEGRef()->et());
     l1extra_.tkEMEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkEMEGRefPhi.push_back(it->getEGRef()->phi());
-   l1extra_.nTkEM++;
+    l1extra_.tkEMHGC.push_back( it->getEGRef()->isoEt()<0 );
+    l1extra_.nTkEM++;
   }}
 }
 
@@ -279,18 +283,49 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::L1TkMuonPar
     l1extra_.tkMuonPhi.push_back(it->phi());
     l1extra_.tkMuonChg.push_back(it->charge());
     l1extra_.tkMuonTrkIso.push_back(it->getTrkIsol());
+    if(it->muonDetector()!=3){
     l1extra_.tkMuonMuRefPt.push_back(it->getMuRef()->hwPt()*0.5);
     l1extra_.tkMuonMuRefEta.push_back(it->getMuRef()->hwEta()*0.010875);
     l1extra_.tkMuonMuRefPhi.push_back(l1t::MicroGMTConfiguration::calcGlobalPhi( it->getMuRef()->hwPhi(), it->getMuRef()->trackFinderType(), it->getMuRef()->processor() )*2*M_PI/576);
     l1extra_.tkMuonDRMuTrack.push_back(it->dR());
     l1extra_.tkMuonNMatchedTracks.push_back(it->nTracksMatched());
+    l1extra_.tkMuonQuality .push_back(it->getMuRef()->hwQual());
+    }else {
+    l1extra_.tkMuonMuRefPt.push_back(-777);
+    l1extra_.tkMuonMuRefEta.push_back(-777);
+    l1extra_.tkMuonMuRefPhi.push_back(-777);
+    l1extra_.tkMuonDRMuTrack.push_back(-777);
+    l1extra_.tkMuonNMatchedTracks.push_back(0);
+    l1extra_.tkMuonQuality .push_back(999);
+    }
+    l1extra_.tkMuonRegion.push_back(it->muonDetector());
     l1extra_.tkMuonzVtx.push_back(it->getTrkzVtx());
     l1extra_.tkMuonBx .push_back(0); //it->bx());
-    l1extra_.tkMuonQuality .push_back(it->getMuRef()->hwQual());
-
     l1extra_.nTkMuons++;
   }
 }
+
+
+void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra)
+{
+
+  for(l1t::L1TkMuonParticleCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuonStubs<maxL1Extra; it++){
+
+    l1extra_.tkMuonStubsEt .push_back( it->pt());
+    l1extra_.tkMuonStubsEta.push_back(it->eta());
+    l1extra_.tkMuonStubsPhi.push_back(it->phi());
+    l1extra_.tkMuonStubsChg.push_back(it->charge());
+    l1extra_.tkMuonStubsTrkIso.push_back(it->getTrkIsol());
+    l1extra_.tkMuonStubsRegion.push_back(1);
+    l1extra_.tkMuonStubszVtx.push_back(it->getTrkzVtx());
+    l1extra_.tkMuonStubsBx .push_back(0); //it->bx());
+    l1extra_.tkMuonStubsBarrelStubs.push_back(it->getBarrelStubs().size());
+    l1extra_.nTkMuonStubs++;
+  }
+}
+
+
+
 
 void L1Analysis::L1AnalysisPhaseII::SetTkGlbMuon(const edm::Handle<l1t::L1TkGlbMuonParticleCollection> muon, unsigned maxL1Extra)
 {
@@ -345,14 +380,26 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollec
   double mHT30_px=0, mHT30_py=0, HT30=0;
 
   // This should not be hardcoded here!!! 
-   double offset[10]={-12.058, -12.399, -11.728, -10.557, -5.391,  4.586,  3.542,  1.825, -6.946, -17.857};
-   double scale[10]={ 1.127,  1.155,  1.124,  1.192,  1.289,  0.912,  1.008,  1.298,  1.650,  1.402};
+// From V4
+   double offset[10]={-6.664, -5.996, -6.798,  3.459,  13.866,  0,    0,      0,    0,        0.};
+   double scale[10]= {1.052,   1.065,  1.121,  1.100,   1.157,  1,    1,      1,    1,        1.};
    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
+//   From  V2p2 to V4
+//    double offset[10]={-9.922, -10.116, -12.620, -9.839, -3.331,  33.446,  10.677,  10.830,  5.794, -33.316};
+//    double scale[10]={ 1.123,  1.143,  1.175,  1.097,  1.199,  0.672,  0.953,  1.153,  1.343,  1.812};
+//    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
+//   Until V2p2
+//    double offset[10]={-12.058, -12.399, -11.728, -10.557, -5.391,  4.586,  3.542,  1.825, -6.946, -17.857};
+//    double scale[10]={ 1.127,  1.155,  1.124,  1.192,  1.289,  0.912,  1.008,  1.298,  1.650,  1.402};
+//    double etaBin[10]={0.500,  1.000,  1.500,  2.000,  2.500,  3.000,  3.500,  4.000,  4.500,  5.000};
+
 
   for(reco::PFJetCollection::const_iterator it=PFJet->begin(); it!=PFJet->end() && l1extra_.nPuppiJets<maxL1Extra; it++){
     double corrBin=1, offsetBin=0;
     for(int j=0; j<10; j++) {if(corrBin==1 && fabs(it->eta())<etaBin[j]) {corrBin=scale[j]; offsetBin=offset[j];}}
     double ptcorr=(it->pt()-offsetBin)/corrBin;
+      if (ptcorr<0) ptcorr=0; // sanity check for borderline cases / low pt jets
+      //std::cout<<"eta: "<<it->eta()<<"    pt:"<<it->pt()<<" -  scale:"<<corrBin<<"  off:"<<offsetBin<<" ->  cor: "<<ptcorr<<std::endl;
     reco::Particle::PolarLorentzVector corrP4= reco::Particle::PolarLorentzVector(ptcorr,it->eta(),it->phi(),it->mass());
     l1extra_.puppiJetEt .push_back(corrP4.pt());
     l1extra_.puppiJetEtUnCorr .push_back(it->et());
@@ -401,4 +448,31 @@ void L1Analysis::L1AnalysisPhaseII::SetL1METPF(const edm::Handle< std::vector<re
   l1extra_.puppiMETPhi = met.phi();
 }
 
+void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> >  l1pfCandidates,  unsigned maxL1Extra)
+{
+      for (unsigned int i=0; i<l1pfCandidates->size() && l1extra_.nPFMuons<maxL1Extra; i++){
+           //enum Kind { ChargedHadron=0, Electron=1, NeutralHadron=2, Photon=3, Muon=4 };
+            if(abs(l1pfCandidates->at(i).id())==4){
+                  l1extra_.pfMuonEt.push_back(l1pfCandidates->at(i).pt()); 
+                  l1extra_.pfMuonEta.push_back(l1pfCandidates->at(i).eta());
+                  l1extra_.pfMuonPhi.push_back(l1pfCandidates->at(i).phi());
+                  l1extra_.pfMuonzVtx.push_back(l1pfCandidates->at(i).pfTrack()->track()->getPOCA(4).z()); // check with Giovanni, there has to be a cleaner way to do this. nParam_=4 should not be hardcoded
+                  l1extra_.nPFMuons++;
+            }
+      }
 
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1PFTau> >  l1pfTaus,  unsigned maxL1Extra)
+{
+
+      for (unsigned int i=0; i<l1pfTaus->size() && l1extra_.nPFTaus<maxL1Extra; i++){
+                   l1extra_.pfTauEt.push_back(l1pfTaus->at(i).pt());
+                   l1extra_.pfTauEta.push_back(l1pfTaus->at(i).eta());
+                   l1extra_.pfTauPhi.push_back(l1pfTaus->at(i).phi());
+                   l1extra_.pfTauType.push_back(l1pfTaus->at(i).tauType());
+                   l1extra_.pfTauChargedIso.push_back(l1pfTaus->at(i).chargedIso());
+                   l1extra_.nPFTaus++;            
+      }
+
+}
