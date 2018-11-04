@@ -171,9 +171,7 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
         tkEMTokenHGC_ = consumes<l1t::L1TkEmParticleCollection>(iConfig.getParameter<edm::InputTag>("tkEMTokenHGC"));
 
         TkMuonToken_ = consumes<l1t::L1TkMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkMuonToken"));
-
         TkGlbMuonToken_ = consumes<l1t::L1TkGlbMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkGlbMuonToken"));
-
         TkMuonStubsToken_ = consumes<l1t::L1TkMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsToken"));
 
         tkTauToken_ = consumes<l1t::L1TkTauParticleCollection>(iConfig.getParameter<edm::InputTag>("tkTauToken"));

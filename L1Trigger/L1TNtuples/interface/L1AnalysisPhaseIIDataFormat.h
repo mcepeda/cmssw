@@ -521,8 +521,6 @@ namespace L1Analysis
     std::vector<unsigned int> pfTauIsoFlag;
     std::vector<unsigned int> pfTauRelIsoFlag;
 
-
-
   }; 
 }
 #endif

@@ -82,6 +82,7 @@ namespace L1Analysis
     void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,  const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGHGC,    unsigned maxL1Extra);
     void SetTkEGLoose   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLoose, const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLooseHGc,    unsigned maxL1Extra);
     void SetTkEM   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,  const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEMHGC,    unsigned maxL1Extra);
+
     void SetTkGlbMuon (const  edm::Handle<l1t::L1TkGlbMuonParticleCollection> TkGlbMuon,   unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
     void SetTkMuonStubs (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);

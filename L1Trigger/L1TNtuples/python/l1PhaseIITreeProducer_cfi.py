@@ -7,12 +7,6 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    sumToken = cms.untracked.InputTag("simCaloStage2Digis"),
    tauTokens = cms.untracked.VInputTag("simCaloStage2Digis"),
 
-#   egTokens = cms.VInputTag(cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")),
-#   egTokens = cms.VInputTag(cms.InputTag("l1EGammaCrystalsProducer","L1EGammaCollectionBXVWithCuts"),cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")),
-#   tkEGTokens = cms.VInputTag( cms.InputTag("L1TkElectronsCrystal","EG"),cms.InputTag("L1TkElectronsHGC","EG") ),
-#   tkEGLooseTokens = cms.VInputTag( cms.InputTag("L1TkElectronsLooseCrystal","EG"),cms.InputTag("L1TkElectronsLooseHGC","EG") ),
-#   tkEMTokens = cms.VInputTag( cms.InputTag("L1TkPhotonsCrystal","EG"),cms.InputTag("L1TkPhotonsHGC","EG") ),
-
    egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),
    tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"),
    tkEGLooseTokenBarrel = cms.InputTag("L1TkElectronsLooseCrystal","EG"),

@@ -540,7 +540,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
                    //std::cout<<l1pfTaus->at(i).pt()<<"   "<<l1pfTaus->at(i).chargedIso()<<"  "<<l1pfTaus->at(i).passTightIso()<<"  "<<l1extra_.pfTauIsoFlag[l1extra_.nPFTaus]<<"  "<<isoflag<<std::endl;
                    // VeryLoose: <50; Loose < 20; Medium<10; Tight<5 
                    isoflag=l1pfTaus->at(i).tauRelIsoQuality();
-                   l1extra_.pfTauRelIsoFlag.push_back(isoflag);
+                   l1extra_.pfTauRelIsoFlag.push_back(isoflag); // are these ones filled?
                    l1extra_.nPFTaus++;
       }
 
