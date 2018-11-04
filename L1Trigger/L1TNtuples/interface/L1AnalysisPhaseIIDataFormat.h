@@ -266,7 +266,8 @@ namespace L1Analysis
       pfTauPhi.clear();
       pfTauChargedIso.clear();
       pfTauType.clear();
-
+      pfTauIsoFlag.clear();
+      pfTauRelIsoFlag.clear();
 
     }
  
@@ -517,7 +518,8 @@ namespace L1Analysis
     std::vector<double> pfTauPhi;
     std::vector<double> pfTauType;
     std::vector<double> pfTauChargedIso;
-
+    std::vector<unsigned int> pfTauIsoFlag;
+    std::vector<unsigned int> pfTauRelIsoFlag;
 
 
 

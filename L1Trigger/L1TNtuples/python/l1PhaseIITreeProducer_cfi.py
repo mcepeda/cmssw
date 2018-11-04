@@ -7,10 +7,21 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    sumToken = cms.untracked.InputTag("simCaloStage2Digis"),
    tauTokens = cms.untracked.VInputTag("simCaloStage2Digis"),
 
-   egTokens = cms.VInputTag(cms.InputTag("l1EGammaCrystalsProducer","L1EGammaCollectionBXVWithCuts"),cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")),
-   tkEGTokens = cms.VInputTag( cms.InputTag("L1TkElectronsCrystal","EG"),cms.InputTag("L1TkElectronsHGC","EG") ),
-   tkEGLooseTokens = cms.VInputTag( cms.InputTag("L1TkElectronsLooseCrystal","EG"),cms.InputTag("L1TkElectronsLooseHGC","EG") ),
-   tkEMTokens = cms.VInputTag( cms.InputTag("L1TkPhotonsCrystal","EG"),cms.InputTag("L1TkPhotonsHGC","EG") ),
+#   egTokens = cms.VInputTag(cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")),
+#   egTokens = cms.VInputTag(cms.InputTag("l1EGammaCrystalsProducer","L1EGammaCollectionBXVWithCuts"),cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")),
+#   tkEGTokens = cms.VInputTag( cms.InputTag("L1TkElectronsCrystal","EG"),cms.InputTag("L1TkElectronsHGC","EG") ),
+#   tkEGLooseTokens = cms.VInputTag( cms.InputTag("L1TkElectronsLooseCrystal","EG"),cms.InputTag("L1TkElectronsLooseHGC","EG") ),
+#   tkEMTokens = cms.VInputTag( cms.InputTag("L1TkPhotonsCrystal","EG"),cms.InputTag("L1TkPhotonsHGC","EG") ),
+
+   egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),
+   tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"),
+   tkEGLooseTokenBarrel = cms.InputTag("L1TkElectronsLooseCrystal","EG"),
+   tkEMTokenBarrel = cms.InputTag("L1TkPhotonsCrystal","EG"),
+
+   egTokenHGC = cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts"),
+   tkEGTokenHGC = cms.InputTag("L1TkElectronsHGC","EG"),
+   tkEGLooseTokenHGC = cms.InputTag("L1TkElectronsLooseHGC","EG"),
+   tkEMTokenHGC = cms.InputTag("L1TkPhotonsHGC","EG"),
 
    tkTauToken = cms.InputTag("L1TkTauFromCalo",""), # ?
    TkGlbMuonToken = cms.InputTag("L1TkGlbMuons",""),
@@ -57,7 +68,7 @@ runmenutree=cms.Path(l1PhaseIITree*genTree)
 
 from L1Trigger.L1TTrackMatch.L1TkElectronTrackProducer_cfi import L1TkElectrons
 L1TkElectronsCrystal = L1TkElectrons.clone()
-L1TkElectronsCrystal.L1EGammaInputTag = cms.InputTag("l1EGammaCrystalsProducer","L1EGammaCollectionBXVWithCuts") 
+L1TkElectronsCrystal.L1EGammaInputTag = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator") 
 L1TkElectronsCrystal.IsoCut = cms.double(-0.1)
 
 L1TkElectronsHGC=L1TkElectrons.clone()
@@ -66,7 +77,7 @@ L1TkElectronsHGC.IsoCut = cms.double(-0.1)
 
 from L1Trigger.L1TTrackMatch.L1TkEmParticleProducer_cfi import L1TkPhotons
 L1TkPhotonsCrystal=L1TkPhotons.clone()
-L1TkPhotonsCrystal.L1EGammaInputTag = cms.InputTag("l1EGammaCrystalsProducer","L1EGammaCollectionBXVWithCuts")
+L1TkPhotonsCrystal.L1EGammaInputTag = cms.InputTag("L1EGammaClusterEmuProducer",   "L1EGammaCollectionBXVEmulator")
 L1TkPhotonsCrystal.IsoCut = cms.double(-0.1)
 
 L1TkPhotonsHGC=L1TkPhotons.clone()

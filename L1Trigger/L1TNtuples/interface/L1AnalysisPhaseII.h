@@ -75,13 +75,13 @@ namespace L1Analysis
     void SetMuon (const edm::Handle<l1t::MuonBxCollection>   muon, unsigned maxL1Extra);
 
     // Add new standalone objects 
-    void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,   unsigned maxL1Extra);
+    void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,  const edm::Handle<l1t::EGammaBxCollection> EGHGC, unsigned maxL1Extra);
     void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra);
 
     // Add L1TrackTriggerObjects
-    void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,     unsigned maxL1Extra);
-    void SetTkEGLoose   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLoose,     unsigned maxL1Extra);
-    void SetTkEM   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,     unsigned maxL1Extra);
+    void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,  const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGHGC,    unsigned maxL1Extra);
+    void SetTkEGLoose   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLoose, const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLooseHGc,    unsigned maxL1Extra);
+    void SetTkEM   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,  const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEMHGC,    unsigned maxL1Extra);
     void SetTkGlbMuon (const  edm::Handle<l1t::L1TkGlbMuonParticleCollection> TkGlbMuon,   unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
     void SetTkMuonStubs (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
