@@ -112,6 +112,7 @@ namespace L1Analysis
       EGzVtx.clear();
       EGHwQual.clear();      
       EGHGC.clear();
+      EGPassesID.clear();
 
       nTkEG = 0;
       tkEGEt.clear();
@@ -125,6 +126,7 @@ namespace L1Analysis
       tkEGEGRefEta.clear();
       tkEGEGRefPhi.clear();
       tkEGHGC.clear();
+      tkEGPassesID.clear();
 
 
 
@@ -139,7 +141,8 @@ namespace L1Analysis
       tkEGLooseEGRefPt.clear();
       tkEGLooseEGRefEta.clear();
       tkEGLooseEGRefPhi.clear();
-      tkEGHGC.clear();
+      tkEGLooseHGC.clear();
+      tkEGLoosePassesID.clear();         
 
       nTkEM = 0;
       tkEMEt.clear();
@@ -153,6 +156,7 @@ namespace L1Analysis
       tkEMEGRefEta.clear();
       tkEMEGRefPhi.clear();
       tkEMHGC.clear();
+      tkEMPassesID.clear();
 
       // TkTaus
       nTkTau = 0;
@@ -268,6 +272,7 @@ namespace L1Analysis
       pfTauType.clear();
       pfTauIsoFlag.clear();
       pfTauRelIsoFlag.clear();
+      pfTauPassesMediumIso.clear();
 
     }
  
@@ -360,7 +365,8 @@ namespace L1Analysis
     std::vector<double> EGIso;
     std::vector<double> EGzVtx;
     std::vector<int>    EGHwQual;
-    std::vector<double> EGHGC;
+    std::vector<bool> EGHGC;
+    std::vector<bool>   EGPassesID;
 
     unsigned int nTkEG;
     std::vector<double> tkEGEt;
@@ -374,7 +380,7 @@ namespace L1Analysis
     std::vector<double>   tkEGEGRefEta;
     std::vector<double>   tkEGEGRefPhi;
     std::vector<bool> tkEGHGC;
-
+    std::vector<bool> tkEGPassesID;
 
     unsigned int ntkEGLoose;
     std::vector<double> tkEGLooseEt;
@@ -388,6 +394,7 @@ namespace L1Analysis
     std::vector<double>   tkEGLooseEGRefEta;
     std::vector<double>   tkEGLooseEGRefPhi;
     std::vector<bool> tkEGLooseHGC;
+    std::vector<bool> tkEGLoosePassesID;
 
     unsigned int nTkEM;
     std::vector<double> tkEMEt;
@@ -401,6 +408,8 @@ namespace L1Analysis
     std::vector<double>   tkEMEGRefEta;
     std::vector<double>   tkEMEGRefPhi;
     std::vector<bool> tkEMHGC;
+    std::vector<bool> tkEMPassesID;
+
 
     unsigned int nTkTau;
     std::vector<double> tkTauEt;
@@ -520,7 +529,7 @@ namespace L1Analysis
     std::vector<double> pfTauChargedIso;
     std::vector<unsigned int> pfTauIsoFlag;
     std::vector<unsigned int> pfTauRelIsoFlag;
-
+    std::vector<bool> pfTauPassesMediumIso;
 
 
   }; 

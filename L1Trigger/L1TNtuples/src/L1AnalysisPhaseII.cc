@@ -168,6 +168,8 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
     l1extra_.EGHGC.push_back(0);
+    bool quality= (it->hwQual() & (1<<0) ) > 0 ;
+    l1extra_.EGPassesID.push_back(quality); 
     l1extra_.nEG++;
   }
   }
@@ -181,6 +183,8 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
     l1extra_.EGHGC.push_back(1);
+    bool quality= (it->hwQual() ==2 ) ;
+    l1extra_.EGPassesID.push_back(quality);  
     l1extra_.nEG++;
   }
   }
@@ -202,6 +206,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
     l1extra_.tkEGEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGBx.push_back(0);//it->bx());
     l1extra_.tkEGHGC.push_back(0);
+    bool quality=( it->getEGRef()->hwQual() && (1<<1) )> 0;
+    l1extra_.tkEGPassesID.push_back(quality);
     l1extra_.nTkEG++;
   }}
 
@@ -218,6 +224,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
     l1extra_.tkEGEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGBx.push_back(0);//it->bx());
     l1extra_.tkEGHGC.push_back(1);
+    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    l1extra_.tkEGPassesID.push_back(quality);
     l1extra_.nTkEG++;
   }}
 
@@ -238,6 +246,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
     l1extra_.tkEGLooseEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGLooseBx.push_back(0);//it->bx());
     l1extra_.tkEGLooseHGC.push_back(0);
+    bool quality=( it->getEGRef()->hwQual() && (1<<1) )> 0;  
+    l1extra_.tkEGLoosePassesID.push_back(quality);
     l1extra_.ntkEGLoose++;
   }}
 
@@ -254,6 +264,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
     l1extra_.tkEGLooseEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEGLooseBx.push_back(0);//it->bx());
     l1extra_.tkEGLooseHGC.push_back(1);
+    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    l1extra_.tkEGLoosePassesID.push_back(quality);
     l1extra_.ntkEGLoose++;
   }}
 
@@ -274,6 +286,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.tkEMEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkEMEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEMHGC.push_back( 0 );
+    bool quality= (it->getEGRef()->hwQual() & (1<<2) ) > 0 ;
+    l1extra_.tkEMPassesID.push_back(quality);
     l1extra_.nTkEM++;
   }}
   for(l1t::L1TkEmParticleCollection::const_iterator it=tkEMHGC->begin(); it!=tkEMHGC->end() && l1extra_.nTkEM<maxL1Extra; it++){
@@ -288,6 +302,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.tkEMEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkEMEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkEMHGC.push_back( 1 );
+    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    l1extra_.tkEMPassesID.push_back(quality);
     l1extra_.nTkEM++;
   }}
 }
@@ -440,6 +456,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollec
   double mHT15_px=0, mHT15_py=0, HT15=0;
   double mHT20_px=0, mHT20_py=0, HT20=0;
   double mHT30_px=0, mHT30_py=0, HT30=0;
+  double mHT30_15_px=0, mHT30_15_py=0, HT30_15=0;
 
   // This should not be hardcoded here!!! 
 // From V4
@@ -486,6 +503,11 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollec
                   mHT30_px+=corrP4.px();
                   mHT30_py+=corrP4.py();
       }
+    if(corrP4.pt()>30 && fabs(it->eta())<1.5) {
+                  HT30_15+=corrP4.pt();
+                  mHT30_15_px+=corrP4.px();
+                  mHT30_15_py+=corrP4.py();
+      }
   }
   l1extra_.puppiMHTEt.push_back( sqrt(mHT15_px*mHT15_px+mHT15_py*mHT15_py) );
   l1extra_.puppiMHTPhi.push_back( atan(mHT15_py/mHT15_px) );
@@ -499,7 +521,11 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<reco::PFJetCollec
   l1extra_.puppiMHTPhi.push_back( atan(mHT30_py/mHT30_px) );
   l1extra_.puppiHT.push_back( HT30 );
 
-  l1extra_.nPuppiMHT=3;
+  l1extra_.puppiMHTEt.push_back( sqrt(mHT30_15_px*mHT30_15_px+mHT30_15_py*mHT30_15_py) );
+  l1extra_.puppiMHTPhi.push_back( atan(mHT30_15_py/mHT30_15_px) );
+  l1extra_.puppiHT.push_back( HT30_15 );
+
+  l1extra_.nPuppiMHT=4;
 
 }
 
@@ -541,6 +567,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
                    // VeryLoose: <50; Loose < 20; Medium<10; Tight<5 
                    isoflag=l1pfTaus->at(i).tauRelIsoQuality();
                    l1extra_.pfTauRelIsoFlag.push_back(isoflag);
+                   l1extra_.pfTauPassesMediumIso.push_back(l1pfTaus->at(i).passMediumIso());
                    l1extra_.nPFTaus++;
       }
 
