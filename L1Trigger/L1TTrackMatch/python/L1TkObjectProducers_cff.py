@@ -40,6 +40,7 @@ from L1Trigger.L1TTrackMatch.L1TkEmParticleProducer_cfi import L1TkPhotonsHGC
 pL1TkPhotonsHGC = cms.Path( L1TkPhotonsHGC )
 
 
+#Other tk Objects
 
 from L1Trigger.L1TTrackMatch.L1TrackerJetProducer_cfi import L1TrackerJets
 pL1TrackerJets = cms.Path( L1TrackerJets)

@@ -48,6 +48,7 @@ L1TkPhotonsCrystal=L1TkPhotons.clone()
 L1TkPhotonsCrystal.L1EGammaInputTag = cms.InputTag("L1EGammaClusterEmuProducer", "L1EGammaCollectionBXVEmulator")
 L1TkPhotonsCrystal.IsoCut = cms.double(-0.1)
 
+
 L1TkPhotonsHGC=L1TkPhotons.clone()
 L1TkPhotonsHGC.L1EGammaInputTag = cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts")
 L1TkPhotonsHGC.IsoCut = cms.double(-0.1)
