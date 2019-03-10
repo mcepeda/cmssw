@@ -188,9 +188,9 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
     l1extra_.EGHGC.push_back(0);
-    bool quality= (it->hwQual() & (1<<0) ) > 0 ;
+    bool quality= ( ( it->hwQual() >> 1 ) & 1   ) > 0 ;
     l1extra_.EGPassesLooseTrackID.push_back(quality); 
-    quality= (it->hwQual() & (1<<0) ) > 0 ;
+    quality= ( ( it->hwQual() >> 2 ) & 1 ) > 0 ;
     l1extra_.EGPassesPhotonID.push_back(quality);
     l1extra_.nEG++;
   }
