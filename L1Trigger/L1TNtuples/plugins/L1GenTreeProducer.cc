@@ -87,6 +87,7 @@ private:
   edm::EDGetTokenT<reco::GenParticleCollection> genParticleToken_;
   edm::EDGetTokenT<std::vector<PileupSummaryInfo> > pileupInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
+  edm::EDGetTokenT<edm::HepMCProduct> hepMCProductTag_;
 
 };
 
@@ -94,7 +95,7 @@ private:
 
 L1GenTreeProducer::L1GenTreeProducer(const edm::ParameterSet& iConfig)
 {
-
+  hepMCProductTag_ = consumes<edm::HepMCProduct>(iConfig.getUntrackedParameter<edm::InputTag>("hepMCProductTag",edm::InputTag("generatorSmeared"))) ;
   genJetToken_ = consumes<reco::GenJetCollection>(iConfig.getUntrackedParameter<edm::InputTag>("genJetToken"));
   genMETTrueToken_ = consumes<reco::GenMETCollection>(iConfig.getUntrackedParameter<edm::InputTag>("genMETTrueToken",edm::InputTag("genMetTrue")));
   genMETCaloToken_ = consumes<reco::GenMETCollection>(iConfig.getUntrackedParameter<edm::InputTag>("genMETCaloToken",edm::InputTag("genMetCalo")));
@@ -135,11 +136,52 @@ L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   if (genInfo.isValid()){
     l1GenData_->weight = genInfo->weight();
     l1GenData_->pthat = genInfo->hasBinningValues() ? (genInfo->binningValues())[0] : 0.0;
+     // std::cout<<genInfo->signalProcessID()<<std::endl;
   }
+
+
+/*
+  edm::Handle<edm::HepMCProduct> evt;
+  iEvent.getByToken(hepMCProductTag_, evt); 
+  
+  const HepMC::GenEvent * generated_event = evt->GetEvent();
+  const HepMC::GenEvent& mc = evt->getHepMCData(); 
+
+  int i=0;
+
+  for (HepMC::GenEvent::particle_const_iterator p = mc.particles_begin();
+         p != mc.particles_end(); ++p) {
+      int id = (*p)->pdg_id();
+      double phitmp = (*p)->momentum().phi();
+      if (phitmp < 0) phitmp += 2.*M_PI;
+                   std::cout<< "MC part #" << ++i << ": id = "  << id
+                   << ", status = " << (*p)->status()
+                   << "\n   pX = " << (*p)->momentum().x()
+                   << ", pY = " << (*p)->momentum().y()
+                   << ", pT = " << (*p)->momentum().perp() << " GeV"
+                   << ", p =  " << (*p)->momentum().rho()  << " GeV";
+
+            if (((*p)->production_vertex()!=nullptr))
+                  std::cout<<" production vertex" << (*p)->production_vertex()->point3d().x()<<","<<(*p)->production_vertex()->point3d().perp();
+
+            if ((*p)->end_vertex()!=nullptr) 
+                  {std::cout<<"end vertex if displaced"<<(*p)->end_vertex()->point3d().x()<< "    "<<std::endl;
+                  }
+
+            else std::cout<<std::endl;
+
+            if ( ((*p)->production_vertex()!=nullptr) && (*p)->end_vertex()!=nullptr ) {
+                  double xdiff=(*p)->end_vertex()->point3d().x()-(*p)->production_vertex()->point3d().x();
+                  double ydiff=(*p)->end_vertex()->point3d().y()-(*p)->production_vertex()->point3d().y();
+                  double zdiff=(*p)->end_vertex()->point3d().z()-(*p)->production_vertex()->point3d().z();
+                  double distancia= sqrt ( xdiff*xdiff + ydiff*ydiff + zdiff*zdiff);
+                  std::cout<<"flight? "<<distancia<<std::endl; 
+            }
+   } 
+*/
 
   edm::Handle<reco::GenJetCollection> genJets;
   iEvent.getByToken(genJetToken_, genJets);
-
 
   if (genJets.isValid()){ 
 
@@ -182,8 +224,6 @@ L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   }
 
 
-
-
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genParticleToken_, genParticles);
 
@@ -194,7 +234,12 @@ L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     for(size_t i = 0; i < genParticles->size(); ++ i) {
       const reco::GenParticle & p = (*genParticles)[i];
       int id = p.pdgId();
-      
+ 
+      double LXY=sqrt( p.vertex().x()* p.vertex().x() + p.vertex().y()* p.vertex().y() ); // or rho 
+      double DXY=-p.vertex().x()*sin(p.phi()) + p.vertex().y()*cos(p.phi());   
+
+      //if(abs(id)==13) std::cout<<"p?" <<id<<"    ->"<<p.pt()<<"  "<<p.eta()<<" ->"<<distance<<std::endl;
+
       // See if the parent was interesting
       int parentID = -10000;
       unsigned int nMo=p.numberOfMothers();
@@ -240,7 +285,12 @@ L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 	  l1GenData_->partPhi.push_back(p.phi());
 	  l1GenData_->partE.push_back(p.energy());
 	  l1GenData_->partParent.push_back(parentID);
-          l1GenData_->partCh.push_back(p.charge());
+        l1GenData_->partCh.push_back(p.charge());
+        l1GenData_->partP.push_back(p.p());
+        l1GenData_->partDxy.push_back(DXY);
+        l1GenData_->partLxy.push_back(LXY);
+
+
           ++nPart;
 	}
     }

@@ -411,9 +411,9 @@ namespace L1Analysis
     std::vector<double> EGIso;
     std::vector<double> EGzVtx;
     std::vector<int>    EGHwQual;
-    std::vector<bool> EGHGC;
-    std::vector<bool>   EGPassesLooseTrackID;
-    std::vector<bool>   EGPassesPhotonID;
+    std::vector<unsigned int> EGHGC;
+    std::vector<unsigned int>   EGPassesLooseTrackID;
+    std::vector<unsigned int>   EGPassesPhotonID;
 
     unsigned int nTkElectrons;
     std::vector<double> tkElectronEt;
@@ -427,9 +427,9 @@ namespace L1Analysis
     std::vector<double>   tkElectronEGRefPt;
     std::vector<double>   tkElectronEGRefEta;
     std::vector<double>   tkElectronEGRefPhi;
-    std::vector<bool> tkElectronHGC;
-    std::vector<bool> tkElectronPassesLooseTrackID;
-    std::vector<bool> tkElectronPassesPhotonID;
+    std::vector<unsigned int> tkElectronHGC;
+    std::vector<unsigned int> tkElectronPassesLooseTrackID;
+    std::vector<unsigned int> tkElectronPassesPhotonID;
 
     unsigned int nTkElectronsLoose;
     std::vector<double> tkElectronLooseEt;
@@ -443,9 +443,9 @@ namespace L1Analysis
     std::vector<double>   tkElectronLooseEGRefPt;
     std::vector<double>   tkElectronLooseEGRefEta;
     std::vector<double>   tkElectronLooseEGRefPhi;
-    std::vector<bool> tkElectronLooseHGC;
-    std::vector<bool> tkElectronLoosePassesLooseTrackID;
-    std::vector<bool> tkElectronLoosePassesPhotonID;
+    std::vector<unsigned int> tkElectronLooseHGC;
+    std::vector<unsigned int> tkElectronLoosePassesLooseTrackID;
+    std::vector<unsigned int> tkElectronLoosePassesPhotonID;
 
     unsigned int nTkPhotons;
     std::vector<double> tkPhotonEt;
@@ -459,9 +459,9 @@ namespace L1Analysis
     std::vector<double>   tkPhotonEGRefPt;
     std::vector<double>   tkPhotonEGRefEta;
     std::vector<double>   tkPhotonEGRefPhi;
-    std::vector<bool> tkPhotonHGC;
-    std::vector<bool> tkPhotonPassesLooseTrackID;
-    std::vector<bool> tkPhotonPassesPhotonID;
+    std::vector<unsigned int> tkPhotonHGC;
+    std::vector<unsigned int> tkPhotonPassesLooseTrackID;
+    std::vector<unsigned int> tkPhotonPassesPhotonID;
 
 
     unsigned int nTkTau;
@@ -598,7 +598,7 @@ namespace L1Analysis
     std::vector<double> pfTauChargedIso;
     std::vector<unsigned int> pfTauIsoFlag;
     std::vector<unsigned int> pfTauRelIsoFlag;
-    std::vector<bool> pfTauPassesMediumIso;
+    std::vector<unsigned int> pfTauPassesMediumIso;
     std::vector<int> pfTauChg;
 
 
