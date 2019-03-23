@@ -103,7 +103,7 @@ phase2_SimL1Emulator += l1EGammaCrystalsProducer
 from L1Trigger.L1CaloTrigger.L1EGammaCrystalsEmulatorProducer_cfi import *
 phase2_SimL1Emulator += L1EGammaClusterEmuProducer
 
-from L1Trigger.L1CaloTrigger.l1EGammaEEProducer_cfi import * 
+from L1Trigger.L1CaloTrigger.l1EGammaEEProducer_cfi import *
 phase2_SimL1Emulator += l1EGammaEEProducer
 
 #  CaloJets
@@ -121,6 +121,8 @@ phase2_SimL1Emulator += l1KBmtfStubMatchedMuons
 from L1Trigger.L1TTrackMatch.L1TkMuonStubProducer_cfi import *
 l1TkMuonStubEndCap = L1TkMuonStub.clone()
 phase2_SimL1Emulator += l1TkMuonStubEndCap
+l1TkMuonStubEndCapS12 = L1TkMuonStubS12.clone()
+phase2_SimL1Emulator += l1TkMuonStubEndCapS12
 
 # Tk + StandaloneObj
 # (include L1TkPrimaryVertex)
@@ -146,6 +148,7 @@ phase2_SimL1Emulator += L1TrackerEtMiss
 phase2_SimL1Emulator += L1TkCaloHTMissVtx
 phase2_SimL1Emulator += L1TrackerHTMiss
 phase2_SimL1Emulator += L1TkMuons
+phase2_SimL1Emulator += L1TkMuonsTP
 phase2_SimL1Emulator += L1TkGlbMuons
 phase2_SimL1Emulator += L1TkTauFromCalo
 phase2_SimL1Emulator += L1TrackerTaus
