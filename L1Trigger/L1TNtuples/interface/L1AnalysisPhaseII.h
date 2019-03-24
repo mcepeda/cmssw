@@ -92,6 +92,7 @@ namespace L1Analysis
     void SetTkGlbMuon (const  edm::Handle<l1t::L1TkGlbMuonParticleCollection> TkGlbMuon,   unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
     void SetTkMuonStubs (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra,unsigned int muonDetector);
+    void SetTkMuonStubsS12 (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra,unsigned int muonDetector);
 
     void SetTrkTau  (const  edm::Handle<l1t::L1TrkTauParticleCollection> tkTau, unsigned maxL1Extra);
     void SetCaloTkTau  (const  edm::Handle<l1t::L1CaloTkTauParticleCollection> CaloTkTau, unsigned maxL1Extra);

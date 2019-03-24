@@ -475,6 +475,26 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::L1TkMu
   }
 }
 
+void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsS12(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
+{
+
+  for(l1t::L1TkMuonParticleCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuonStubsS12<maxL1Extra; it++){
+
+    l1extra_.tkMuonStubsS12Pt .push_back( it->pt());
+    l1extra_.tkMuonStubsS12Eta.push_back(it->eta());
+    l1extra_.tkMuonStubsS12Phi.push_back(it->phi());
+    l1extra_.tkMuonStubsS12Chg.push_back(it->charge());
+    l1extra_.tkMuonStubsS12TrkIso.push_back(it->getTrkIsol());
+    l1extra_.tkMuonStubsS12zVtx.push_back(it->getTrkzVtx());
+    l1extra_.tkMuonStubsS12Bx .push_back(0); //it->bx());
+    l1extra_.tkMuonStubsS12Qual .push_back(1);
+    l1extra_.tkMuonStubsS12BarrelStubs.push_back(it->getBarrelStubs().size());
+    l1extra_.tkMuonStubsS12Region.push_back(muonDetector);
+    l1extra_.nTkMuonStubsS12++;
+  }
+}
+
+
 
 
 

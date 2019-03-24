@@ -25,6 +25,7 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    TkMuonToken = cms.InputTag("L1TkMuons",""),                                            
    TkMuonStubsTokenBMTF = cms.InputTag("l1KBmtfStubMatchedMuons",""),
    TkMuonStubsTokenEMTF = cms.InputTag("l1TkMuonStubEndCap",""),
+   TkMuonStubsTokenEMTFS12 = cms.InputTag("l1TkMuonStubEndCapS12",""),
 
    tkTrackerJetToken = cms.InputTag("TwoLayerJets", "L1TwoLayerJets"),                                            
    tkCaloJetToken = cms.InputTag("L1TkCaloJets","L1TkCaloJets"),

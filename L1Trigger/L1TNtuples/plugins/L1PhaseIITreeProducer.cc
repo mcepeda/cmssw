@@ -134,6 +134,10 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::L1TkMuonParticleCollection> TkMuonStubsTokenBMTF_;
                 edm::EDGetTokenT<l1t::L1TkMuonParticleCollection> TkMuonStubsTokenEMTF_;
 
+
+                edm::EDGetTokenT<l1t::L1TkMuonParticleCollection> TkMuonStubEndCapTokenS12_;
+
+
                 edm::EDGetTokenT<l1t::L1TkJetParticleCollection> tkTrackerJetToken_;
                 edm::EDGetTokenT<l1t::L1TkEtMissParticleCollection> tkMetToken_;
 
@@ -194,6 +198,8 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
 
         TkMuonStubsTokenBMTF_ = consumes<l1t::L1TkMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenBMTF"));
         TkMuonStubsTokenEMTF_ = consumes<l1t::L1TkMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenEMTF"));
+
+        TkMuonStubEndCapTokenS12_ = consumes<l1t::L1TkMuonParticleCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenEMTFS12"));
 
         tkTauToken_ = consumes<l1t::L1TrkTauParticleCollection>(iConfig.getParameter<edm::InputTag>("tkTauToken"));
         caloTkTauToken_ = consumes<l1t::L1CaloTkTauParticleCollection>(iConfig.getParameter<edm::InputTag>("caloTkTauToken"));
@@ -266,12 +272,15 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon;
         edm::Handle<l1t::L1TkMuonParticleCollection> TkMuonStubsBMTF;
         edm::Handle<l1t::L1TkMuonParticleCollection> TkMuonStubsEMTF;
+        edm::Handle<l1t::L1TkMuonParticleCollection> TkMuonStubsS12;
 
         iEvent.getByToken(muonToken_, muon);
         iEvent.getByToken(TkGlbMuonToken_,TkGlbMuon);
         iEvent.getByToken(TkMuonToken_,TkMuon);
         iEvent.getByToken(TkMuonStubsTokenBMTF_,TkMuonStubsBMTF);
         iEvent.getByToken(TkMuonStubsTokenEMTF_,TkMuonStubsEMTF);
+        iEvent.getByToken(TkMuonStubEndCapTokenS12_,TkMuonStubsS12);
+
 
         edm::Handle<l1t::RegionalMuonCandBxCollection> muonsKalman;
         iEvent.getByToken(muonKalman_,muonsKalman);
@@ -488,6 +497,8 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         }
         if (TkMuonStubsBMTF.isValid()){
                 l1Extra->SetTkMuonStubs(TkMuonStubsBMTF, maxL1Extra_,1);
+                l1Extra->SetTkMuonStubsS12(TkMuonStubsBMTF, maxL1Extra_,1);
+
         } else {
                 edm::LogWarning("MissingProduct") << "L1PhaseII TkMuonStubsBMTF not found. Branch will not be filled" << std::endl;
         }
@@ -496,10 +507,16 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
                   //std::cout<<"Hey! Im getting the endcap stubs" <<std::endl;
                   //std::cout<<TkMuonStubsEMTF->size()<<std::endl;
                 l1Extra->SetTkMuonStubs(TkMuonStubsEMTF, maxL1Extra_,3);
+
         } else {
                 edm::LogWarning("MissingProduct") << "L1PhaseII TkMuonStubsEMTF not found. Branch will not be filled" << std::endl;
         }
 
+        if (TkMuonStubsS12.isValid()){
+                l1Extra->SetTkMuonStubsS12(TkMuonStubsS12, maxL1Extra_,3);
+        } else {
+                edm::LogWarning("MissingProduct") << "L1PhaseII TkMuonStubsS12 not found. Branch will not be filled" << std::endl;
+        }
 
 
 

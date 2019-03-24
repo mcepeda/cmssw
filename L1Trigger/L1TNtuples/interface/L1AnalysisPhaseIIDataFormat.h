@@ -261,6 +261,18 @@ namespace L1Analysis
       tkMuonStubsBarrelStubs.clear();
       tkMuonStubsRegion.clear();
 
+      nTkMuonStubsS12 = 0;
+      tkMuonStubsS12Pt.clear();
+      tkMuonStubsS12Eta.clear();
+      tkMuonStubsS12Phi.clear();
+      tkMuonStubsS12Chg.clear();
+      tkMuonStubsS12TrkIso.clear();
+      tkMuonStubsS12Bx.clear();
+      tkMuonStubsS12Qual.clear();
+      tkMuonStubsS12zVtx.clear();
+      tkMuonStubsS12BarrelStubs.clear();
+      tkMuonStubsS12Region.clear();
+
       // TrackerMet
       nTrackerMet = 0;
       trackerMetSumEt.clear();
@@ -570,6 +582,18 @@ namespace L1Analysis
     std::vector<double>   tkMuonStubszVtx;
     std::vector<double>   tkMuonStubsBarrelStubs;
     std::vector<unsigned int>   tkMuonStubsRegion;
+
+    unsigned int nTkMuonStubsS12;
+    std::vector<double>   tkMuonStubsS12Pt;
+    std::vector<double>   tkMuonStubsS12Eta;
+    std::vector<double>   tkMuonStubsS12Phi;
+    std::vector<int>      tkMuonStubsS12Chg;
+    std::vector<int>      tkMuonStubsS12Bx;
+    std::vector<double>   tkMuonStubsS12TrkIso;
+    std::vector<unsigned int>      tkMuonStubsS12Qual;
+    std::vector<double>   tkMuonStubsS12zVtx;
+    std::vector<double>   tkMuonStubsS12BarrelStubs;
+    std::vector<unsigned int>   tkMuonStubsS12Region;
 
     unsigned int nTrackerMet;
     std::vector<double> trackerMetSumEt;
