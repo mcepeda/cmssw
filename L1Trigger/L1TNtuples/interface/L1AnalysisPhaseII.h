@@ -75,15 +75,16 @@ namespace L1Analysis
 
 
     // Old style objects (Phase I)
-    void SetTau  (const edm::Handle<l1t::TauBxCollection>    tau,  unsigned maxL1Extra);
-    void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
-    void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
+//    void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
+//    void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
     void SetMuon (const edm::Handle<l1t::MuonBxCollection>   muon, unsigned maxL1Extra);
 
     // Add new standalone objects 
     void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,  const edm::Handle<l1t::EGammaBxCollection> EGHGC, unsigned maxL1Extra);
     void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra, unsigned int muonDetector);
-    void SetCaloJet  (const edm::Handle<l1t::JetBxCollection>    calojet,  unsigned maxL1Extra);
+    void SetCaloJet  (const edm::Handle<l1t::JetBxCollection>    calojet,  unsigned maxL1Extra, float caloJetHTT);
+    void SetCaloTau  (const edm::Handle<l1t::TauBxCollection>    calotau,  unsigned maxL1Extra);
+
 
     // Add L1TrackTriggerObjects
     void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,  const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGHGC,    unsigned maxL1Extra);
