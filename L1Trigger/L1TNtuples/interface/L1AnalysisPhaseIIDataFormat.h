@@ -303,6 +303,37 @@ namespace L1Analysis
       pfTauPassesMediumIso.clear();
       pfTauChg.clear();
 
+      nNNTaus = 0;
+      nnTauEt.clear();
+      nnTauEta.clear();
+      nnTauPhi.clear();
+      nnTauChg.clear();
+      nnTauChargedIso.clear();
+      nnTauFullIso.clear();    
+      nnTauID.clear();         
+      nnTauPassLooseNN.clear();   
+      nnTauPassLoosePF.clear(); 
+      nnTauPassTightPF.clear();   
+      nnTauPassTightNN.clear();
+
+      nTkBsCands=0;
+      tkBsCandPt.clear();
+      tkBsCandEta.clear();
+      tkBsCandPhi.clear();
+      tkBsCandMass.clear();
+      tkBsCandPhi1Pt.clear();
+      tkBsCandPhi2Pt.clear();
+      tkBsCandPhi1Eta.clear();
+      tkBsCandPhi2Eta.clear();
+      tkBsCandPhi1Phi.clear();
+      tkBsCandPhi2Phi.clear();
+      tkBsCandPhi1Mass.clear();
+      tkBsCandPhi2Mass.clear();
+      tkBsCandDRPhiPair.clear(); 
+      tkBsCandDxyPhiPair.clear();
+      tkBsCandDzPhiPair.clear(); 
+      tkBsCandKind.clear();
+
     }
  
     double z0Puppi;
@@ -592,6 +623,36 @@ namespace L1Analysis
     std::vector<unsigned int> pfTauPassesMediumIso;
     std::vector<int> pfTauChg;
 
+    unsigned int nNNTaus;
+    std::vector<double>   nnTauEt;
+    std::vector<double>   nnTauEta;
+    std::vector<double>   nnTauPhi;
+    std::vector<int>   nnTauChg;
+    std::vector<double>   nnTauChargedIso;
+    std::vector<double>   nnTauFullIso;
+    std::vector<unsigned int>   nnTauID;
+    std::vector<unsigned int>   nnTauPassLooseNN;
+    std::vector<unsigned int>   nnTauPassLoosePF;
+    std::vector<unsigned int>   nnTauPassTightPF;
+    std::vector<unsigned int>   nnTauPassTightNN;
+
+   unsigned int nTkBsCands;
+   std::vector<double> tkBsCandPt;
+   std::vector<double> tkBsCandEta;
+   std::vector<double> tkBsCandPhi;
+   std::vector<double> tkBsCandMass;
+   std::vector<double> tkBsCandPhi1Pt;
+   std::vector<double> tkBsCandPhi2Pt;
+   std::vector<double> tkBsCandPhi1Eta;
+   std::vector<double> tkBsCandPhi2Eta;
+   std::vector<double> tkBsCandPhi1Phi;
+   std::vector<double> tkBsCandPhi2Phi;
+   std::vector<double> tkBsCandPhi1Mass;
+   std::vector<double> tkBsCandPhi2Mass;
+   std::vector<double> tkBsCandDRPhiPair;    
+   std::vector<double> tkBsCandDxyPhiPair;   
+   std::vector<double> tkBsCandDzPhiPair;    
+   std::vector<int>    tkBsCandKind;
 
   }; 
 }

@@ -58,6 +58,10 @@
 #include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h" 
 
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFTau.h"
+
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidate.h"
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidateFwd.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
@@ -112,7 +116,9 @@ namespace L1Analysis
 
     // Add new PFTau
     void SetPFTaus  (const      edm::Handle< std::vector<l1t::L1PFTau>>  l1pfTaus,    unsigned maxL1Extra);
+    void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
 
+    void SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
 

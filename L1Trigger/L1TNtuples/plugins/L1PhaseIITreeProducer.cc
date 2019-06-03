@@ -75,6 +75,11 @@ Implementation:
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
 #include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h"
 
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFTau.h"
+
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidate.h"
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidateFwd.h"
+
 // ROOT output stuff
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -162,6 +167,12 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::L1PFTauCollection> L1PFTauToken_;
                 edm::EDGetTokenT< std::vector<l1t::PFCandidate> > l1PFCandidates_; 
 
+                edm::EDGetTokenT<l1t::PFTauCollection> L1NNTauToken_;
+
+                edm::EDGetTokenT<l1t::L1TkBsCandidateCollection> L1TkBsCandToken_;          
+                edm::EDGetTokenT<l1t::L1TkBsCandidateCollection> L1TkBsCandLooseToken_;
+                edm::EDGetTokenT<l1t::L1TkBsCandidateCollection> L1TkBsCandTightToken_;
+
 };
 
 L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
@@ -220,6 +231,12 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
 
         l1PFCandidates_ =consumes <std::vector<l1t::PFCandidate> > (iConfig.getParameter<edm::InputTag>("l1PFCandidates")); 
         L1PFTauToken_ = consumes<l1t::L1PFTauCollection>(iConfig.getParameter<edm::InputTag>("L1PFTauToken"));
+
+        L1NNTauToken_ = consumes<l1t::PFTauCollection>(iConfig.getParameter<edm::InputTag>("L1NNTauToken"));
+
+        L1TkBsCandToken_ =consumes<l1t::L1TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsToken"));
+        L1TkBsCandLooseToken_ =consumes<l1t::L1TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsLooseToken"));
+        L1TkBsCandTightToken_ =consumes<l1t::L1TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsTightToken"));
 
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
 
@@ -285,6 +302,9 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<l1t::L1PFTauCollection> l1PFTau;
         iEvent.getByToken(L1PFTauToken_,l1PFTau);
 
+        edm::Handle<l1t::PFTauCollection> l1NNTau;
+        iEvent.getByToken(L1NNTauToken_,l1NNTau);
+
         edm::Handle<std::vector<l1t::PFCandidate>> l1PFCandidates;
         iEvent.getByToken(l1PFCandidates_,l1PFCandidates);
 
@@ -331,6 +351,15 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<float> caloJetHTTs;
         iEvent.getByToken(caloJetHTTToken_, caloJetHTTs);
         float caloJetHTT=*caloJetHTTs;
+
+        edm::Handle<std::vector<l1t::L1TkBsCandidate>> tkBsCands;
+        iEvent.getByToken(L1TkBsCandToken_,tkBsCands); 
+        edm::Handle<std::vector<l1t::L1TkBsCandidate>> tkBsCandsLoose;
+        iEvent.getByToken(L1TkBsCandLooseToken_,tkBsCandsLoose);
+        edm::Handle<std::vector<l1t::L1TkBsCandidate>> tkBsCandsTight;
+        iEvent.getByToken(L1TkBsCandTightToken_,tkBsCandsTight);
+
+
 
 
         float vertexTDRZ0=-999; 
@@ -533,7 +562,28 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         }
 
 
+        if(l1NNTau.isValid()){
+                l1Extra->SetNNTaus(l1NNTau,maxL1Extra_);
+        } else{
+                edm::LogWarning("MissingProduct") << "L1NNTaus missing"<<std::endl;
+        }
 
+
+        if(tkBsCands.isValid()){
+                  l1Extra->SetBsCands(tkBsCands,maxL1Extra_,0);
+       }else{
+                  edm::LogWarning("MissingProduct") << "L1TkBsCands missing "<<std::endl;
+      }
+        if(tkBsCandsLoose.isValid()){
+                  l1Extra->SetBsCands(tkBsCandsLoose,maxL1Extra_,1);
+       }else{
+                  edm::LogWarning("MissingProduct") << "L1TkBsCandsLoose missing "<<std::endl;
+      }
+        if(tkBsCandsTight.isValid()){
+                  l1Extra->SetBsCands(tkBsCandsTight,maxL1Extra_,2);
+       }else{
+                  edm::LogWarning("MissingProduct") << "L1TkBsCandsTight missing "<<std::endl;
+      }
 
         tree_->Fill();
 

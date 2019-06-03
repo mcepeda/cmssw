@@ -204,7 +204,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
 void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectron, const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronHGC,  unsigned maxL1Extra)
 {
   for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectron->begin(); it!=tkElectron->end() && l1extra_.nTkElectrons<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkElectronEt .push_back(it->et());
     l1extra_.tkElectronEta.push_back(it->eta());
     l1extra_.tkElectronPhi.push_back(it->phi());
@@ -226,7 +226,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
   }}
 
   for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronHGC->begin(); it!=tkElectronHGC->end() && l1extra_.nTkElectrons<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkElectronEt .push_back(it->et());
     l1extra_.tkElectronEta.push_back(it->eta());
     l1extra_.tkElectronPhi.push_back(it->phi());
@@ -251,7 +251,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
 void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronLoose, const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronLooseHGC,unsigned maxL1Extra)
 {
   for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronLoose->begin(); it!=tkElectronLoose->end() && l1extra_.nTkElectronsLoose<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkElectronLooseEt .push_back(it->et());
     l1extra_.tkElectronLooseEta.push_back(it->eta());
     l1extra_.tkElectronLoosePhi.push_back(it->phi());
@@ -273,7 +273,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
   }}
 
   for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronLooseHGC->begin(); it!=tkElectronLooseHGC->end() && l1extra_.nTkElectronsLoose<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkElectronLooseEt .push_back(it->et());
     l1extra_.tkElectronLooseEta.push_back(it->eta());
     l1extra_.tkElectronLoosePhi.push_back(it->phi());
@@ -299,7 +299,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
 void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticleCollection> tkPhoton, const edm::Handle<l1t::L1TkEmParticleCollection> tkPhotonHGC, unsigned maxL1Extra)
 {
   for(l1t::L1TkEmParticleCollection::const_iterator it=tkPhoton->begin(); it!=tkPhoton->end() && l1extra_.nTkPhotons<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkPhotonEt .push_back(it->et());
     l1extra_.tkPhotonEta.push_back(it->eta());
     l1extra_.tkPhotonPhi.push_back(it->phi());
@@ -318,7 +318,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.nTkPhotons++;
   }}
   for(l1t::L1TkEmParticleCollection::const_iterator it=tkPhotonHGC->begin(); it!=tkPhotonHGC->end() && l1extra_.nTkPhotons<maxL1Extra; it++){
-    if (it->et() > 5){
+    if (it->et() > 1){
     l1extra_.tkPhotonEt .push_back(it->et());
     l1extra_.tkPhotonEta.push_back(it->eta());
     l1extra_.tkPhotonPhi.push_back(it->phi());
@@ -632,3 +632,53 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
       }
 
 }
+
+
+void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFTau> >  l1nnTaus,  unsigned maxL1Extra)
+{
+ 
+      for (unsigned int i=0; i<l1nnTaus->size() && l1extra_.nNNTaus<maxL1Extra; i++){
+                   if(l1nnTaus->at(i).pt()<10) continue;
+                   l1extra_.nnTauEt.push_back(l1nnTaus->at(i).pt());
+                   l1extra_.nnTauEta.push_back(l1nnTaus->at(i).eta());
+                   l1extra_.nnTauPhi.push_back(l1nnTaus->at(i).phi());
+                   l1extra_.nnTauChg.push_back(l1nnTaus->at(i).charge());
+                   l1extra_.nnTauChargedIso.push_back(l1nnTaus->at(i).chargedIso());
+                   l1extra_.nnTauFullIso.push_back(l1nnTaus->at(i).fullIso());
+                   l1extra_.nnTauID.push_back(l1nnTaus->at(i).id());
+                   l1extra_.nnTauPassLooseNN.push_back(l1nnTaus->at(i).passLooseNN());
+                   l1extra_.nnTauPassLoosePF.push_back(l1nnTaus->at(i).passLoosePF());
+                   l1extra_.nnTauPassTightPF.push_back(l1nnTaus->at(i).passTightPF());
+                   l1extra_.nnTauPassTightNN.push_back(l1nnTaus->at(i).passTightNN());
+                   l1extra_.nNNTaus++;
+      }
+ 
+}
+
+
+
+void L1Analysis::L1AnalysisPhaseII::SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind)
+{
+      for (unsigned int i=0; i<l1TkBs->size() && l1extra_.nTkBsCands<maxL1Extra; i++){
+           l1extra_.tkBsCandPt.push_back(l1TkBs->at(i).pt());
+           l1extra_.tkBsCandMass.push_back(l1TkBs->at(i).p4().M());
+           l1extra_.tkBsCandEta.push_back(l1TkBs->at(i).eta());
+           l1extra_.tkBsCandPhi.push_back(l1TkBs->at(i).phi());
+           l1extra_.tkBsCandPhi1Pt.push_back(l1TkBs->at(i).getPhiCandidate(0).pt());
+           l1extra_.tkBsCandPhi2Pt.push_back(l1TkBs->at(i).getPhiCandidate(1).pt());
+           l1extra_.tkBsCandPhi1Mass.push_back(l1TkBs->at(i).getPhiCandidate(0).p4().M());
+           l1extra_.tkBsCandPhi2Mass.push_back(l1TkBs->at(i).getPhiCandidate(1).p4().M());
+           l1extra_.tkBsCandPhi1Phi.push_back(l1TkBs->at(i).getPhiCandidate(0).phi());
+           l1extra_.tkBsCandPhi2Phi.push_back(l1TkBs->at(i).getPhiCandidate(1).phi());
+           l1extra_.tkBsCandPhi1Eta.push_back(l1TkBs->at(i).getPhiCandidate(0).eta());
+           l1extra_.tkBsCandPhi2Eta.push_back(l1TkBs->at(i).getPhiCandidate(1).eta());
+           l1extra_.tkBsCandDRPhiPair.push_back(l1TkBs->at(i).dRPhiPair());
+           l1extra_.tkBsCandDxyPhiPair.push_back(l1TkBs->at(i).dxyPhiPair());
+           l1extra_.tkBsCandDzPhiPair.push_back(l1TkBs->at(i).dRPhiPair());
+           l1extra_.tkBsCandKind.push_back(kind);
+           l1extra_.nTkBsCands++; 
+      }
+
+
+}
+
