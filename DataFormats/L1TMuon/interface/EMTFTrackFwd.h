@@ -1,8 +1,8 @@
 #ifndef __l1t_emtftrackfwd_h__
 #define __l1t_emtftrackfwd_h__
 
-#include "DataFormats/L1Trigger/interface/BXVector.h"
-#include "DataFormats/L1Trigger/interface/L1TObjComparison.h"
+#include "DataFormats/Common/interface/Ref.h"
+#include "DataFormats/Common/interface/RefVector.h"
 
 namespace l1t {
   class EMTFTrack;
