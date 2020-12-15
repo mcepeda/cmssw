@@ -34,9 +34,12 @@
   <class name="l1t::EMTFRoad"/>
   <class name="l1t::EMTFRoadCollection"/>
   <class name="edm::Wrapper<l1t::EMTFRoadCollection>"/>
+
   <class name="l1t::EMTFTrack"/>
+  <class name="std::vector<l1t::EMTFTrack>"/>
   <class name="l1t::EMTFTrackCollection"/>
   <class name="edm::Wrapper<l1t::EMTFTrackCollection>"/>
+
   <class name="l1t::EMTFPtLUT"/>
 
   <class name="l1t::CPPFDigi" ClassVersion="3">
@@ -106,6 +109,9 @@
   <class name="std::vector<l1t::RegionalMuonCandRefPair>"/>
   <class name="l1t::RegionalMuonCandRefPairBxCollection"/>
   <class name="edm::Wrapper<l1t::RegionalMuonCandRefPairBxCollection>"/>
+
+  <class name="l1t::EMTFTrackRef"/>
+  <class name="std::vector<l1t::EMTFTrackRef>"/>
 
  </selection>
 </lcgdict>
